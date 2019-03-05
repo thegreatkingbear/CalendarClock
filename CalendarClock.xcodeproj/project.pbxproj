@@ -7,14 +7,23 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1FBBA74B1769F4C852975007 /* Pods_CalendarClock.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6D9247FE49AB737B887DFC6 /* Pods_CalendarClock.framework */; };
+		E7272E32221A5234007ED8AD /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7272E31221A5234007ED8AD /* Event.swift */; };
+		E7272E34221A5E15007ED8AD /* Clock.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7272E33221A5E15007ED8AD /* Clock.swift */; };
 		E729285422170379002C4576 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E729285322170379002C4576 /* AppDelegate.swift */; };
 		E729285622170379002C4576 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E729285522170379002C4576 /* ViewController.swift */; };
 		E729285922170379002C4576 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E729285722170379002C4576 /* Main.storyboard */; };
 		E729285B2217037B002C4576 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E729285A2217037B002C4576 /* Assets.xcassets */; };
 		E729285E2217037B002C4576 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E729285C2217037B002C4576 /* LaunchScreen.storyboard */; };
+		E7E5617222190F40000CA186 /* ViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7E5617122190F40000CA186 /* ViewReactor.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		151CBF811C3C5387659C86A5 /* Pods-CalendarClock.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CalendarClock.debug.xcconfig"; path = "Target Support Files/Pods-CalendarClock/Pods-CalendarClock.debug.xcconfig"; sourceTree = "<group>"; };
+		A6D9247FE49AB737B887DFC6 /* Pods_CalendarClock.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CalendarClock.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		AC414B3C2C1F373E13F07029 /* Pods-CalendarClock.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CalendarClock.release.xcconfig"; path = "Target Support Files/Pods-CalendarClock/Pods-CalendarClock.release.xcconfig"; sourceTree = "<group>"; };
+		E7272E31221A5234007ED8AD /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
+		E7272E33221A5E15007ED8AD /* Clock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Clock.swift; sourceTree = "<group>"; };
 		E729285022170379002C4576 /* CalendarClock.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CalendarClock.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E729285322170379002C4576 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E729285522170379002C4576 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -22,6 +31,7 @@
 		E729285A2217037B002C4576 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E729285D2217037B002C4576 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E729285F2217037B002C4576 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E7E5617122190F40000CA186 /* ViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewReactor.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -29,17 +39,37 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1FBBA74B1769F4C852975007 /* Pods_CalendarClock.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		97C5D6CBC5087D5E630A19D9 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				151CBF811C3C5387659C86A5 /* Pods-CalendarClock.debug.xcconfig */,
+				AC414B3C2C1F373E13F07029 /* Pods-CalendarClock.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		B2FEA7BB25CB1B24396A959B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A6D9247FE49AB737B887DFC6 /* Pods_CalendarClock.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		E729284722170379002C4576 = {
 			isa = PBXGroup;
 			children = (
 				E729285222170379002C4576 /* CalendarClock */,
 				E729285122170379002C4576 /* Products */,
+				97C5D6CBC5087D5E630A19D9 /* Pods */,
+				B2FEA7BB25CB1B24396A959B /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -55,7 +85,10 @@
 			isa = PBXGroup;
 			children = (
 				E729285322170379002C4576 /* AppDelegate.swift */,
+				E7E5617122190F40000CA186 /* ViewReactor.swift */,
 				E729285522170379002C4576 /* ViewController.swift */,
+				E7272E31221A5234007ED8AD /* Event.swift */,
+				E7272E33221A5E15007ED8AD /* Clock.swift */,
 				E729285722170379002C4576 /* Main.storyboard */,
 				E729285A2217037B002C4576 /* Assets.xcassets */,
 				E729285C2217037B002C4576 /* LaunchScreen.storyboard */,
@@ -71,9 +104,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = E72928622217037B002C4576 /* Build configuration list for PBXNativeTarget "CalendarClock" */;
 			buildPhases = (
+				C249BD6BDBDE3E319EEA20A0 /* [CP] Check Pods Manifest.lock */,
 				E729284C22170379002C4576 /* Sources */,
 				E729284D22170379002C4576 /* Frameworks */,
 				E729284E22170379002C4576 /* Resources */,
+				09B687AE7E4DAC0C5F28A832 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -130,13 +165,73 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		09B687AE7E4DAC0C5F28A832 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-CalendarClock/Pods-CalendarClock-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Differentiator/Differentiator.framework",
+				"${BUILT_PRODUCTS_DIR}/ReactorKit/ReactorKit.framework",
+				"${BUILT_PRODUCTS_DIR}/RxAtomic/RxAtomic.framework",
+				"${BUILT_PRODUCTS_DIR}/RxCocoa/RxCocoa.framework",
+				"${BUILT_PRODUCTS_DIR}/RxDataSources/RxDataSources.framework",
+				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Differentiator.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReactorKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxAtomic.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxCocoa.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxDataSources.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-CalendarClock/Pods-CalendarClock-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C249BD6BDBDE3E319EEA20A0 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-CalendarClock-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		E729284C22170379002C4576 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E7272E32221A5234007ED8AD /* Event.swift in Sources */,
 				E729285622170379002C4576 /* ViewController.swift in Sources */,
+				E7E5617222190F40000CA186 /* ViewReactor.swift in Sources */,
 				E729285422170379002C4576 /* AppDelegate.swift in Sources */,
+				E7272E34221A5E15007ED8AD /* Clock.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -280,11 +375,13 @@
 		};
 		E72928632217037B002C4576 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 151CBF811C3C5387659C86A5 /* Pods-CalendarClock.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 9E3BES8CW5;
 				INFOPLIST_FILE = CalendarClock/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -298,11 +395,13 @@
 		};
 		E72928642217037B002C4576 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = AC414B3C2C1F373E13F07029 /* Pods-CalendarClock.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 9E3BES8CW5;
 				INFOPLIST_FILE = CalendarClock/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
