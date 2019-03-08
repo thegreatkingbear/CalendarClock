@@ -17,11 +17,12 @@ class ViewReactor: Reactor {
     enum Action {
         case startClicking
         case fetchEvents
+        case observeEvents
     }
     
     enum Mutation {
         case clicks
-        case requestEvents([CustomEvent])
+        case receiveEvents([CustomEvent])
     }
     
     struct State {
@@ -30,6 +31,8 @@ class ViewReactor: Reactor {
     }
     
     let initialState: State
+    let eventStore = EventStore()
+    let observeEvent = NotificationCenter.default.rx.notification(.EKEventStoreChanged)
     
     init() {
         print("init clock view reactor")
@@ -46,8 +49,16 @@ class ViewReactor: Reactor {
                 .map { _ in Mutation.clicks }
         case .fetchEvents:
             return self.requestCalendarEvents().map { events in
-                Mutation.requestEvents(events)
+                Mutation.receiveEvents(events)
             }
+        case .observeEvents:
+            return NotificationCenter.default.rx.notification(.EKEventStoreChanged)
+                .map({ (event) in
+                    self.requestCalendarEvents().map { events in
+                        Mutation.receiveEvents(events)
+                    }
+                })
+                .merge()
         }
     }
     
@@ -57,7 +68,7 @@ class ViewReactor: Reactor {
             var newState = state
             newState.currentTime = Clock.currentDateString()
             return newState
-        case let .requestEvents(events):
+        case let .receiveEvents(events):
             //print("request events : ", events!.description)
             var newState = state
             let sectionedEvents = SectionedEvents(header: "something", items: events)
@@ -73,18 +84,19 @@ class ViewReactor: Reactor {
         return Observable.create({ (observer) -> Disposable in
             // 아래에 결과값을 그냥 dispose 시키면 바로 없어져버린다 (사실상 값을 subscribe 할 수가 없다)
             // 그렇다면, 어떻게 dispose 시켜줘야 하나? 패턴상으로는 diposeBag은 view controller에 위치하는 것으로 보인다.
-            _ = EventStore.standard.authorized.asObservable().subscribe { (authorized) in
+            _ = self.eventStore.authorized.asObservable().subscribe { (authorized) in
                 print("authorized : ", authorized)
                 if let flag = authorized.element, flag == true {
-                    observer.onNext(EventStore.fetchEventsDetail())
+                    observer.onNext(self.eventStore.fetchEventsDetail())
                     observer.onCompleted()
                 }
             }
             
-            EventStore.verifyAuthorityToEvents()
+            self.eventStore.verifyAuthorityToEvents()
             
             return Disposables.create()
         })
 
     }
+    
 }

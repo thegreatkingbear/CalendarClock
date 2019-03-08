@@ -19,7 +19,7 @@ class ViewController: UIViewController, StoryboardView {
     let dataSource = RxTableViewSectionedReloadDataSource<SectionedEvents>(configureCell: { dataSource, tableView, indexPath, item in
         print(item)
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-        cell.textLabel?.text = "Item \(item.title) - \(item.startDate) : \(item.endDate)"
+        cell.textLabel?.text = "\(item.title) - \(item.startDate) : \(item.endDate)"
         return cell
     })
 
@@ -29,7 +29,6 @@ class ViewController: UIViewController, StoryboardView {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
     }
     
     func bind(reactor: Reactor) {
@@ -38,6 +37,9 @@ class ViewController: UIViewController, StoryboardView {
         
         // fetch events
         reactor.action.onNext(.fetchEvents)
+        
+        // observe events
+        reactor.action.onNext(.observeEvents)
         
         // clock state to view
         reactor.state.asObservable().map { $0.currentTime }

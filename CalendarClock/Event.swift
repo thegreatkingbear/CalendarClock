@@ -10,23 +10,20 @@ import Foundation
 import EventKit
 import RxSwift
 
-class EventStore {
-    
-    // MARK: - Properties
-    static let standard = EventStore()
+class EventStore: EKEventStore {
     
     // MARK: - Variables
     var authorized = BehaviorSubject<Bool>(value: false)
-    static let eventStore = EKEventStore.init()
-
     
     // Initialization
-    private init() {
-        print("init event")
+    override init() {
+        super.init()
+        
+        print("init event store")
+        
     }
     
-    
-    static func verifyAuthorityToEvents() {
+    func verifyAuthorityToEvents() {
         
         let status = EKEventStore.authorizationStatus(for: EKEntityType.event)
 
@@ -36,42 +33,42 @@ class EventStore {
             break
         case .authorized:
             print("already authorized")
-            standard.authorized.onNext(true)
-            print("value of authorized subject: ", try! standard.authorized.value())
+            authorized.onNext(true)
+            print("value of authorized subject: ", try! authorized.value())
             break
         case .restricted, .denied:
-            standard.authorized.onNext(false)
-            standard.authorized.onCompleted()
+            authorized.onNext(false)
+            authorized.onCompleted()
         }
         
     }
     
-    static func requestAccessToEvents() {
-        eventStore.requestAccess(to: EKEntityType.event) { (accessGranted, error) in
+    func requestAccessToEvents() {
+        requestAccess(to: EKEntityType.event) { (accessGranted, error) in
             if accessGranted {
                 print("access granted")
-                standard.authorized.onNext(true)
+                self.authorized.onNext(true)
             } else if error != nil {
-                standard.authorized.onError(error!)
-                standard.authorized.onCompleted()
+                self.authorized.onError(error!)
+                self.authorized.onCompleted()
             } else {
-                standard.authorized.onNext(true)
-                standard.authorized.onCompleted()
+                self.authorized.onNext(true)
+                self.authorized.onCompleted()
             }
         }
     }
     
-    static func fetchEventsDetail() -> [CustomEvent] {
-        let calendars = eventStore.calendars(for: .event)
+    func fetchEventsDetail() -> [CustomEvent] {
+        let calendars = self.calendars(for: .event)
         var retEvents = [CustomEvent]()
         let oneMonthAgo = NSDate(timeIntervalSinceNow: -1*24*3600)
         let oneMonthAfter = NSDate(timeIntervalSinceNow: +1*24*3600)
 
         for calendar in calendars {
             
-            let predicate = eventStore.predicateForEvents(withStart: oneMonthAgo as Date, end: oneMonthAfter as Date, calendars: [calendar])
+            let predicate = self.predicateForEvents(withStart: oneMonthAgo as Date, end: oneMonthAfter as Date, calendars: [calendar])
             
-            let events = eventStore.events(matching: predicate)
+            let events = self.events(matching: predicate)
             
             for event in events {
                 retEvents
