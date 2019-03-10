@@ -12,10 +12,23 @@ class Clock {
     
     // MARK: - Properties
     static let dateFormatter = DateFormatter()
+    static var flick: Bool = false
 
     static func currentDateString() -> String {
         dateFormatter.dateStyle = .none
         dateFormatter.timeStyle = .short
-        return dateFormatter.string(from: Date())
+        let hour = Calendar.current.component(.hour, from: Date())
+        let minute = Calendar.current.component(.minute, from: Date())
+        let second = Calendar.current.component(.second, from: Date())
+        var now = ""
+        if flick {
+            flick = false
+            now = "\(hour):\(minute)"
+        } else {
+            flick = true
+            now = "\(hour) \(minute)"
+        }
+//        return dateFormatter.string(from: Date())
+        return now
     }
 }
