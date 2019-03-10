@@ -19,7 +19,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fae-pZ-7by">
-                                <rect key="frame" x="16" y="83" width="343" height="89"/>
+                                <rect key="frame" x="16" y="127.5" width="343" height="89"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="89" id="8Zr-NX-pa3"/>
                                 </constraints>
@@ -41,22 +41,14 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="ay2-bS-kMl">
-                                <rect key="frame" x="16" y="180" width="343" height="114"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                            </textView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="sHc-YJ-L4S" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="2YI-bA-XZs"/>
-                            <constraint firstItem="fae-pZ-7by" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="63" id="F6I-mh-oyV"/>
                             <constraint firstItem="sHc-YJ-L4S" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="Gdu-Ct-LQK"/>
                             <constraint firstItem="fae-pZ-7by" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="JhG-eu-NDl"/>
                             <constraint firstItem="fae-pZ-7by" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="PTD-K2-0vj"/>
+                            <constraint firstItem="fae-pZ-7by" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" multiplier="0.5" id="aVT-fQ-IC6"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="sHc-YJ-L4S" secondAttribute="trailing" constant="16" id="akN-ln-JBV"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="fae-pZ-7by" secondAttribute="trailing" constant="16" id="kNY-eg-nWO"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="sHc-YJ-L4S" secondAttribute="bottom" constant="20" id="tDV-eQ-ucB"/>
@@ -67,7 +59,6 @@
                     <connections>
                         <outlet property="clockLabel" destination="fae-pZ-7by" id="2R1-Q6-WO3"/>
                         <outlet property="tableView" destination="sHc-YJ-L4S" id="Cl5-VC-cyM"/>
-                        <outlet property="textView" destination="ay2-bS-kMl" id="NVp-Lf-TUe"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

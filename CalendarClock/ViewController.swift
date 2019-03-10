@@ -19,13 +19,12 @@ class ViewController: UIViewController, StoryboardView {
     let dataSource = RxTableViewSectionedReloadDataSource<SectionedEvents>(configureCell: { dataSource, tableView, indexPath, item in
         print(item)
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-        cell.textLabel?.text = "\(item.title) - \(item.startDate) : \(item.endDate)"
+        cell.textLabel?.text = "\(item.title) - \(item.period())"
         return cell
     })
 
     @IBOutlet weak var clockLabel: UILabel?
     @IBOutlet weak var tableView: UITableView?
-    @IBOutlet weak var textView: UITextView?
     
     override func viewDidLoad() {
         super.viewDidLoad()
