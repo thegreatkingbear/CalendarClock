@@ -15,7 +15,7 @@ class Clock {
 
     static func currentDateString() -> String {
         dateFormatter.dateStyle = .none
-        dateFormatter.timeStyle = .medium
+        dateFormatter.timeStyle = .short
         return dateFormatter.string(from: Date())
     }
 }

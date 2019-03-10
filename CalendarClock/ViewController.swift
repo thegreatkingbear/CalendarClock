@@ -18,13 +18,19 @@ class ViewController: UIViewController, StoryboardView {
     var disposeBag = DisposeBag()
     let dataSource = RxTableViewSectionedReloadDataSource<SectionedEvents>(configureCell: { dataSource, tableView, indexPath, item in
         print(item)
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-        cell.textLabel?.text = "\(item.title) - \(item.period())"
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! EventCell
+        cell.title!.text = "\(item.title)"
+        cell.period!.text = "\(item.period())"
         return cell
     })
 
     @IBOutlet weak var clockLabel: UILabel?
     @IBOutlet weak var tableView: UITableView?
+    
+    // hide status bar for aestheic reason
+    override open var prefersStatusBarHidden: Bool {
+        return true
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,7 +65,7 @@ class ViewController: UIViewController, StoryboardView {
 
 extension ViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 40
+        return 80
     }
 }
 
@@ -87,4 +93,10 @@ extension ObservableType where E: Sequence, E.Iterator.Element: Equatable {
             return Array(lhs) == Array(rhs)
         }
     }
+}
+
+// Event table view cell
+class EventCell: UITableViewCell {
+    @IBOutlet weak var title: UILabel?
+    @IBOutlet weak var period: UILabel?
 }
