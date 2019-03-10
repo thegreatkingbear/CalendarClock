@@ -15,20 +15,17 @@ class Clock {
     static var flick: Bool = false
 
     static func currentDateString() -> String {
-        dateFormatter.dateStyle = .none
-        dateFormatter.timeStyle = .short
         let hour = Calendar.current.component(.hour, from: Date())
         let minute = Calendar.current.component(.minute, from: Date())
         let second = Calendar.current.component(.second, from: Date())
         var now = ""
         if flick {
             flick = false
-            now = "\(hour):\(minute)"
+            now = String(format:"%02d", hour) + ":" + String(format:"%02d", minute)
         } else {
             flick = true
-            now = "\(hour) \(minute)"
+            now = String(format:"%02d", hour) + " " + String(format:"%02d", minute)
         }
-//        return dateFormatter.string(from: Date())
         return now
     }
 }
