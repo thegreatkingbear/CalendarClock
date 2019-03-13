@@ -33,9 +33,8 @@ class EventStore: EKEventStore {
             requestAccessToEvents()
             break
         case .authorized:
-            print("already authorized")
+            print("already authorized(event)")
             authorized.onNext(true)
-            print("value of authorized subject: ", try! authorized.value())
             break
         case .restricted, .denied:
             authorized.onNext(false)

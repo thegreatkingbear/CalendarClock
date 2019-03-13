@@ -18,14 +18,16 @@ class ViewReactor: Reactor {
         case startClicking
         case fetchEvents
         case observeEvents
-        case fetchWeather
+        case fetchCurrentWeather
         case fetchFutureWeather
+        case observeFirstCurrentWeather
+        case observeFirstFutureWeather
     }
     
     enum Mutation {
         case clicks
         case receiveEvents([CustomEvent])
-        case receiveWeathers(CustomWeather)
+        case receiveCurrentWeathers(CustomWeather)
         case receiveFutureWeathers([CustomWeather])
     }
     
@@ -39,7 +41,6 @@ class ViewReactor: Reactor {
     let initialState: State
     let eventStore = EventStore()
     let weather = Weather()
-    let observeEvent = NotificationCenter.default.rx.notification(.EKEventStoreChanged)
     
     init() {
         print("init clock view reactor")
@@ -51,10 +52,12 @@ class ViewReactor: Reactor {
         case .startClicking:
             return Observable<Int>.interval(1, scheduler: MainScheduler.instance)
                 .map { _ in Mutation.clicks }
+            
         case .fetchEvents:
             return self.requestCalendarEvents().map { events in
                 Mutation.receiveEvents(events)
             }
+            
         case .observeEvents:
             return NotificationCenter.default.rx.notification(.EKEventStoreChanged)
                 .map({ (event) in
@@ -63,16 +66,32 @@ class ViewReactor: Reactor {
                     }
                 })
                 .merge()
-        case .fetchWeather:
+            
+        case .fetchCurrentWeather:
             return Observable<Int>.interval(10, scheduler: MainScheduler.instance)
-                .flatMap { _ in self.requestCurrentWeather() }
-                .map { Mutation.receiveWeathers($0) }
+                .startWith(11)
+                .filter { _ in self.weather.coord.0 > 0 }
+                .flatMap { _ in self.weather.fetchCurrentWeatherData() }
+                .map { Mutation.receiveCurrentWeathers($0) }
+            
         case .fetchFutureWeather:
-            return self.requestFutureWeather().map { weathers in
-                Mutation.receiveFutureWeathers(weathers)
-            }
-        }
+            return Observable<Int>.interval(10, scheduler: MainScheduler.instance)
+                .startWith(11)
+                .filter { _ in self.weather.coord.0 > 0 }
+                .flatMap { _ in self.weather.fetchFutureWeatherData() }
+                .map { Mutation.receiveFutureWeathers($0) }
+            
+        case .observeFirstCurrentWeather:
+            return self.weather.locationJustFetched.asObservable()
+                .flatMap { _ in self.weather.fetchCurrentWeatherData() }
+                .map { Mutation.receiveCurrentWeathers($0) }
         
+        case .observeFirstFutureWeather:
+            return self.weather.locationJustFetched.asObservable()
+                .flatMap { _ in self.weather.fetchFutureWeatherData() }
+                .map { Mutation.receiveFutureWeathers($0) }
+            
+        }
     }
     
     func reduce(state: State, mutation: Mutation) -> State {
@@ -88,7 +107,7 @@ class ViewReactor: Reactor {
             print(sectionedEvents.items.description)
             newState.events = [sectionedEvents]
             return newState
-        case let .receiveWeathers(weathers):
+        case let .receiveCurrentWeathers(weathers):
             var newState = state
             print("received current : ", weathers)
             newState.weathers = weathers
@@ -122,52 +141,8 @@ class ViewReactor: Reactor {
             return Disposables.create()
         })
     }
-    
-    private func requestCurrentWeather() -> Observable<CustomWeather> {
-        print("request current weather")
         
-        return Observable.create({ (observer) -> Disposable in
-            _ = self.weather.authorized.asObservable().subscribe { authorized in
-                print("authorized weather: ", authorized)
-                if let flag = authorized.element, flag == true, self.weather.coord.0 != 0 {
-                    self.weather.fetchCurrentWeatherData()
-                    _ = self.weather.currentWeather.asObservable().subscribe { current in
-                        print("current weather : ", current)
-                        if let element = current.element {
-                            observer.onNext(element)
-                            //observer.onCompleted()
-                        }
-                    }
-                }
-            }
-            
-            self.weather.verifyAuthorization()
-            
-            return Disposables.create()
-        })
-    }
-    
-    private func requestFutureWeather() -> Observable<[CustomWeather]> {
-        print("request future weather")
-        
-        return Observable.create({ (observer) -> Disposable in
-            _ = self.weather.authorized.asObservable().subscribe { authorized in
-                print("authorized future: ", authorized)
-                if let flag = authorized.element, flag == true, self.weather.coord.0 != 0 {
-                    self.weather.fetchFutureWeatherData()
-                    _ = self.weather.futures.asObservable().subscribe { futures in
-                        print("future weather : ", futures)
-                        if let element = futures.element {
-                            observer.onNext(element)
-                            observer.onCompleted()
-                        }
-                    }
-                }
-            }
-            
-            self.weather.verifyAuthorization()
-            
-            return Disposables.create()
-        })
+    func requestLocationAuthorization() {
+        self.weather.verifyAuthorization()
     }
 }

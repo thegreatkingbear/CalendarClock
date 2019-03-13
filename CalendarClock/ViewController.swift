@@ -51,6 +51,14 @@ class ViewController: UIViewController, StoryboardView {
     }
     
     func bind(reactor: Reactor) {
+        print("bind method called")
+        // location authorization request (for weather service)
+        reactor.requestLocationAuthorization()
+        
+        // observe first location authorization and get the weather data
+        reactor.action.onNext(.observeFirstCurrentWeather)
+        reactor.action.onNext(.observeFirstFutureWeather)
+        
         // start clock
         reactor.action.onNext(.startClicking)
         
@@ -61,7 +69,7 @@ class ViewController: UIViewController, StoryboardView {
         reactor.action.onNext(.observeEvents)
         
         // fetch weathers
-        reactor.action.onNext(.fetchWeather)
+        reactor.action.onNext(.fetchCurrentWeather)
         
         // fetch future weathers
         reactor.action.onNext(.fetchFutureWeather)

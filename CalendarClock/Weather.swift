@@ -17,10 +17,9 @@ import RxDataSources
 class Weather: CLLocationManager, CLLocationManagerDelegate {
     
     // MARK: - Variables
-    var authorized = BehaviorSubject<Bool>(value: false)
-    var currentWeather = PublishSubject<CustomWeather>()
-    var futures = PublishSubject<[CustomWeather]>()
-    var coord = (0.0, 0.0) // (lat, lon)
+    var coord = (-1.0, -1.0) // (lat, lon)
+    var locationJustFetched = PublishSubject<Bool>()
+    var isFirstLocationFetch = true
     
     // Initialization
     override init() {
@@ -36,36 +35,40 @@ class Weather: CLLocationManager, CLLocationManagerDelegate {
     func verifyAuthorization() {
         
         let status = CLLocationManager.authorizationStatus()
+        print("location authorization status : ", status)
         
         switch (status) {
         case .notDetermined:
             requestAuthorization()
             break
         case .authorizedAlways, .authorizedWhenInUse:
-            print("already authorized")
-            authorized.onNext(true)
-            //print("value of authorized subject: ", try! authorized.value())
+            print("already authorized(weather)")
             break
         case .restricted, .denied:
-            authorized.onNext(false)
-            //authorized.onCompleted()
+            break
         }
         
     }
 
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let locValue: CLLocationCoordinate2D = manager.location?.coordinate else { return }
-//        print("locations = \(locValue.latitude) \(locValue.longitude)")
+        //print("locations = \(locValue.latitude) \(locValue.longitude)")
         self.coord = (locValue.latitude, locValue.longitude)
-        self.authorized.onNext(true)
-        //self.authorized.onCompleted()
+        
+        // alert first time location fetch to the steam
+        if isFirstLocationFetch {
+            print("first time fetch")
+            isFirstLocationFetch = false
+            self.locationJustFetched.onNext(true)
+            self.locationJustFetched.onCompleted()
+        }
     }
     
     func requestAuthorization() {
         self.requestWhenInUseAuthorization()
     }
     
-    func fetchCurrentWeatherData() {
+    func fetchCurrentWeatherData() -> Observable<CustomWeather> {
         print("----------------fetching current weather--------------")
 
         let parameter: Parameters = [
@@ -75,26 +78,29 @@ class Weather: CLLocationManager, CLLocationManagerDelegate {
             "units": "metric"
         ]
         
-        Alamofire.request("\(SECRET.URL_STRING)weather", method: .get, parameters: parameter)
-            .validate(statusCode: 200..<300)
-            .responseJSON { response in
-                switch response.result {
-                case .success(let json):
-                    let dict = JSON(json)
-                    var current = CustomWeather()
-                    current.description = dict["weather"][0]["description"].description
-                    let iconName = dict["weather"][0]["icon"].description
-                    current.icon = UIImage(named: iconName)!.with(color: UIColor.lightGray)
-                    current.temp = String(round(Double(dict["main"]["temp"].description)!)).split(separator: ".")[0] + "°"
-                    self.currentWeather.onNext(current)
-                    self.currentWeather.onCompleted()
-                case .failure(let error):
-                    print(error.localizedDescription)
-                }
-        }
+        return Observable.create({ (observer) -> Disposable in
+            Alamofire.request("\(SECRET.URL_STRING)weather", method: .get, parameters: parameter)
+                .validate(statusCode: 200..<300)
+                .responseJSON { response in
+                    switch response.result {
+                    case .success(let json):
+                        let dict = JSON(json)
+                        var current = CustomWeather()
+                        current.description = dict["weather"][0]["description"].description
+                        let iconName = dict["weather"][0]["icon"].description
+                        current.icon = UIImage(named: iconName)!.with(color: UIColor.lightGray)
+                        current.temp = String(round(Double(dict["main"]["temp"].description)!)).split(separator: ".")[0] + "°"
+                        observer.onNext(current)
+                        observer.onCompleted()
+                    case .failure(let error):
+                        print(error.localizedDescription)
+                    }
+            }
+            return Disposables.create()
+        })
     }
     
-    func fetchFutureWeatherData() {
+    func fetchFutureWeatherData() -> Observable<[CustomWeather]> {
         print("----------------fetching future weather--------------")
         let parameter: Parameters = [
             "appid": SECRET.WEATHER_API_KEY,
@@ -103,28 +109,31 @@ class Weather: CLLocationManager, CLLocationManagerDelegate {
             "units": "metric"
         ]
         
-        Alamofire.request("\(SECRET.URL_STRING)forecast", method: .get, parameters: parameter)
-            .validate(statusCode: 200..<300)
-            .responseJSON { response in
-                switch response.result {
-                case .success(let json):
+        return Observable.create({ (observer) -> Disposable in
+            Alamofire.request("\(SECRET.URL_STRING)forecast", method: .get, parameters: parameter)
+                .validate(statusCode: 200..<300)
+                .responseJSON { response in
                     var ret = [CustomWeather()]
-                    let dicts = JSON(json)
-                    for dict in dicts["list"].arrayValue {
-                        var item = CustomWeather()
-                        item.description = dict["weather"][0]["description"].description
-                        let iconName = dict["weather"][0]["icon"].description
-                        item.icon = UIImage(named: iconName)!.with(color: UIColor.gray)
-                        item.temp = String(round(Double(dict["main"]["temp"].description)!)).split(separator: ".")[0] + "°"
-                        item.time = self.convertUnixTimeToString(dt: Double(dict["dt"].description)!)
-                        ret.append(item)
+                    switch response.result {
+                    case .success(let json):
+                        let dicts = JSON(json)
+                        for dict in dicts["list"].arrayValue {
+                            var item = CustomWeather()
+                            item.description = dict["weather"][0]["description"].description
+                            let iconName = dict["weather"][0]["icon"].description
+                            item.icon = UIImage(named: iconName)!.with(color: UIColor.gray)
+                            item.temp = String(round(Double(dict["main"]["temp"].description)!)).split(separator: ".")[0] + "°"
+                            item.time = self.convertUnixTimeToString(dt: Double(dict["dt"].description)!)
+                            ret.append(item)
+                        }
+                        observer.onNext(ret)
+                        observer.onCompleted()
+                    case .failure(let error):
+                        print(error.localizedDescription)
                     }
-                    self.futures.onNext(ret)
-                    self.futures.onCompleted()
-                case .failure(let error):
-                    print(error.localizedDescription)
-                }
-        }
+            }
+            return Disposables.create()
+        })
     }
     
     // convert dt to 2 + 2 digit string
