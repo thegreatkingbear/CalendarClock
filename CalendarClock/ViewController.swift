@@ -12,6 +12,7 @@ import ReactorKit
 import RxSwift
 import RxCocoa
 import RxDataSources
+import RxOptional
 
 class ViewController: UIViewController, StoryboardView {
     typealias Reactor = ViewReactor
@@ -24,8 +25,21 @@ class ViewController: UIViewController, StoryboardView {
         return cell
     })
 
+    let weatherSource = RxCollectionViewSectionedReloadDataSource<SectionedWeathers>(configureCell: { dataSource, collectionView, indexPath, item in
+        print(item)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "WeatherCell", for: indexPath) as! WeatherCell
+        cell.temp!.text = "\(item.temp!)"
+        cell.icon!.image = item.icon
+        cell.time!.text = "\(item.time!)"
+        return cell
+    })
+    
     @IBOutlet weak var clockLabel: UILabel?
     @IBOutlet weak var tableView: UITableView?
+    @IBOutlet weak var currentDescription: UILabel?
+    @IBOutlet weak var currentTemperature: UILabel?
+    @IBOutlet weak var currentIcon: UIImageView?
+    @IBOutlet weak var collectionView: UICollectionView?
     
     // hide status bar for aestheic reason
     override open var prefersStatusBarHidden: Bool {
@@ -46,6 +60,12 @@ class ViewController: UIViewController, StoryboardView {
         // observe events
         reactor.action.onNext(.observeEvents)
         
+        // fetch weathers
+        reactor.action.onNext(.fetchWeather)
+        
+        // fetch future weathers
+        reactor.action.onNext(.fetchFutureWeather)
+        
         // clock state to view
         reactor.state.asObservable().map { $0.currentTime }
             .distinctUntilChanged()
@@ -56,8 +76,41 @@ class ViewController: UIViewController, StoryboardView {
         self.tableView!.rx.setDelegate(self).disposed(by: self.disposeBag)
         
         reactor.state.asObservable().map { $0.events }
+            .filterNil()
             .distinctUntilChanged { $0 == $1 }
             .bind(to: self.tableView!.rx.items(dataSource: self.dataSource))
+            .disposed(by: self.disposeBag)
+        
+        // current weather to view
+        reactor.state.asObservable().map { $0.weathers }
+            .filterNil()
+            .distinctUntilChanged { $0 == $1 }
+            .map { $0.description }
+            .bind(to: self.currentDescription!.rx.text)
+            .disposed(by: self.disposeBag)
+
+        reactor.state.asObservable().map { $0.weathers }
+            .filterNil()
+            .distinctUntilChanged { $0 == $1 }
+            .map { $0.icon }
+            .bind(to: self.currentIcon!.rx.image)
+            .disposed(by: self.disposeBag)
+
+        reactor.state.asObservable().map { $0.weathers }
+            .filterNil()
+            .distinctUntilChanged { $0 == $1 }
+            .map { $0.temp }
+            .bind(to: self.currentTemperature!.rx.text)
+            .disposed(by: self.disposeBag)
+        
+        // future weathers to view
+        self.collectionView!.rx.setDelegate(self).disposed(by: self.disposeBag)
+
+        reactor.state.asObservable().map { $0.futures }
+            .filterNil()
+            .filterEmpty()
+            .distinctUntilChanged { $0 == $1 }
+            .bind(to: self.collectionView!.rx.items(dataSource: self.weatherSource))
             .disposed(by: self.disposeBag)
     }
 
@@ -69,23 +122,6 @@ extension ViewController: UITableViewDelegate {
     }
 }
 
-struct SectionedEvents: Equatable {
-    var header: String
-    var items: [Item]
-    
-    static func ==(lhs: SectionedEvents, rhs: SectionedEvents) -> Bool {
-        return lhs.header == rhs.header && lhs.items == rhs.items
-    }
-}
-
-extension SectionedEvents: SectionModelType {
-    typealias Item = CustomEvent
-    
-    init(original: SectionedEvents, items: [Item]) {
-        self = original
-        self.items = items
-    }
-}
 
 extension ObservableType where E: Sequence, E.Iterator.Element: Equatable {
     func distinctUntilChanged() -> Observable<E> {
@@ -99,4 +135,10 @@ extension ObservableType where E: Sequence, E.Iterator.Element: Equatable {
 class EventCell: UITableViewCell {
     @IBOutlet weak var title: UILabel?
     @IBOutlet weak var period: UILabel?
+}
+
+class WeatherCell: UICollectionViewCell {
+    @IBOutlet weak var icon: UIImageView?
+    @IBOutlet weak var time: UILabel?
+    @IBOutlet weak var temp: UILabel?
 }

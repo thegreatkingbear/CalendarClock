@@ -17,7 +17,7 @@ class Clock {
     static func currentDateString() -> String {
         let hour = Calendar.current.component(.hour, from: Date())
         let minute = Calendar.current.component(.minute, from: Date())
-        let second = Calendar.current.component(.second, from: Date())
+        //let second = Calendar.current.component(.second, from: Date())
         var now = ""
         if flick {
             flick = false

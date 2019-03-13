@@ -9,4 +9,8 @@ target 'CalendarClock' do
   pod 'ReactorKit'
   pod 'RxCocoa'
   pod 'RxDataSources', '~> 3.0'
+  pod 'Alamofire', '~> 4.8.0'
+  pod 'SwiftyJSON', '~> 4.2'
+  pod 'SwiftyImage'
+  pod 'RxOptional'
 end

@@ -9,6 +9,7 @@
 import Foundation
 import EventKit
 import RxSwift
+import RxDataSources
 
 class EventStore: EKEventStore {
     
@@ -38,7 +39,7 @@ class EventStore: EKEventStore {
             break
         case .restricted, .denied:
             authorized.onNext(false)
-            authorized.onCompleted()
+            //authorized.onCompleted()
         }
         
     }
@@ -50,10 +51,10 @@ class EventStore: EKEventStore {
                 self.authorized.onNext(true)
             } else if error != nil {
                 self.authorized.onError(error!)
-                self.authorized.onCompleted()
+                //self.authorized.onCompleted()
             } else {
                 self.authorized.onNext(true)
-                self.authorized.onCompleted()
+                //self.authorized.onCompleted()
             }
         }
     }
@@ -117,5 +118,23 @@ struct CustomEvent: Equatable {
                 String(format: "%02d", endMinute)
         }
         return expression
+    }
+}
+
+struct SectionedEvents: Equatable {
+    var header: String
+    var items: [Item]
+    
+    static func ==(lhs: SectionedEvents, rhs: SectionedEvents) -> Bool {
+        return lhs.header == rhs.header && lhs.items == rhs.items
+    }
+}
+
+extension SectionedEvents: SectionModelType {
+    typealias Item = CustomEvent
+    
+    init(original: SectionedEvents, items: [Item]) {
+        self = original
+        self.items = items
     }
 }

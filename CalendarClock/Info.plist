@@ -43,5 +43,7 @@
 	</array>
 	<key>NSCalendarsUsageDescription</key>
 	<string></string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string></string>
 </dict>
 </plist>

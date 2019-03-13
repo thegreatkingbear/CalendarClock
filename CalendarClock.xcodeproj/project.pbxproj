@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1FBBA74B1769F4C852975007 /* Pods_CalendarClock.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6D9247FE49AB737B887DFC6 /* Pods_CalendarClock.framework */; };
+		E7048DC92236A1C1001457EE /* SECRET.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7048DC82236A1C1001457EE /* SECRET.swift */; };
 		E7272E32221A5234007ED8AD /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7272E31221A5234007ED8AD /* Event.swift */; };
 		E7272E34221A5E15007ED8AD /* Clock.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7272E33221A5E15007ED8AD /* Clock.swift */; };
 		E729285422170379002C4576 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E729285322170379002C4576 /* AppDelegate.swift */; };
@@ -15,6 +16,7 @@
 		E729285922170379002C4576 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E729285722170379002C4576 /* Main.storyboard */; };
 		E729285B2217037B002C4576 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E729285A2217037B002C4576 /* Assets.xcassets */; };
 		E729285E2217037B002C4576 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E729285C2217037B002C4576 /* LaunchScreen.storyboard */; };
+		E771DB9E22350D26005CABE1 /* Weather.swift in Sources */ = {isa = PBXBuildFile; fileRef = E771DB9D22350D26005CABE1 /* Weather.swift */; };
 		E7E5617222190F40000CA186 /* ViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7E5617122190F40000CA186 /* ViewReactor.swift */; };
 /* End PBXBuildFile section */
 
@@ -22,6 +24,7 @@
 		151CBF811C3C5387659C86A5 /* Pods-CalendarClock.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CalendarClock.debug.xcconfig"; path = "Target Support Files/Pods-CalendarClock/Pods-CalendarClock.debug.xcconfig"; sourceTree = "<group>"; };
 		A6D9247FE49AB737B887DFC6 /* Pods_CalendarClock.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CalendarClock.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AC414B3C2C1F373E13F07029 /* Pods-CalendarClock.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CalendarClock.release.xcconfig"; path = "Target Support Files/Pods-CalendarClock/Pods-CalendarClock.release.xcconfig"; sourceTree = "<group>"; };
+		E7048DC82236A1C1001457EE /* SECRET.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SECRET.swift; sourceTree = "<group>"; };
 		E7272E31221A5234007ED8AD /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 		E7272E33221A5E15007ED8AD /* Clock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Clock.swift; sourceTree = "<group>"; };
 		E729285022170379002C4576 /* CalendarClock.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CalendarClock.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -31,6 +34,7 @@
 		E729285A2217037B002C4576 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E729285D2217037B002C4576 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E729285F2217037B002C4576 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E771DB9D22350D26005CABE1 /* Weather.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Weather.swift; sourceTree = "<group>"; };
 		E7E5617122190F40000CA186 /* ViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewReactor.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -86,9 +90,11 @@
 			children = (
 				E729285322170379002C4576 /* AppDelegate.swift */,
 				E7E5617122190F40000CA186 /* ViewReactor.swift */,
+				E7048DC82236A1C1001457EE /* SECRET.swift */,
 				E729285522170379002C4576 /* ViewController.swift */,
 				E7272E31221A5234007ED8AD /* Event.swift */,
 				E7272E33221A5E15007ED8AD /* Clock.swift */,
+				E771DB9D22350D26005CABE1 /* Weather.swift */,
 				E729285722170379002C4576 /* Main.storyboard */,
 				E729285A2217037B002C4576 /* Assets.xcassets */,
 				E729285C2217037B002C4576 /* LaunchScreen.storyboard */,
@@ -175,23 +181,31 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-CalendarClock/Pods-CalendarClock-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/Differentiator/Differentiator.framework",
 				"${BUILT_PRODUCTS_DIR}/ReactorKit/ReactorKit.framework",
 				"${BUILT_PRODUCTS_DIR}/RxAtomic/RxAtomic.framework",
 				"${BUILT_PRODUCTS_DIR}/RxCocoa/RxCocoa.framework",
 				"${BUILT_PRODUCTS_DIR}/RxDataSources/RxDataSources.framework",
+				"${BUILT_PRODUCTS_DIR}/RxOptional/RxOptional.framework",
 				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftyImage/SwiftyImage.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 			);
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Differentiator.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReactorKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxAtomic.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxCocoa.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxDataSources.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxOptional.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyImage.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -230,7 +244,9 @@
 				E7272E32221A5234007ED8AD /* Event.swift in Sources */,
 				E729285622170379002C4576 /* ViewController.swift in Sources */,
 				E7E5617222190F40000CA186 /* ViewReactor.swift in Sources */,
+				E7048DC92236A1C1001457EE /* SECRET.swift in Sources */,
 				E729285422170379002C4576 /* AppDelegate.swift in Sources */,
+				E771DB9E22350D26005CABE1 /* Weather.swift in Sources */,
 				E7272E34221A5E15007ED8AD /* Clock.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

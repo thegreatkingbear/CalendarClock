@@ -18,28 +18,32 @@ class ViewReactor: Reactor {
         case startClicking
         case fetchEvents
         case observeEvents
+        case fetchWeather
+        case fetchFutureWeather
     }
     
     enum Mutation {
         case clicks
         case receiveEvents([CustomEvent])
+        case receiveWeathers(CustomWeather)
+        case receiveFutureWeathers([CustomWeather])
     }
     
     struct State {
         var currentTime: String?
-        var events: [SectionedEvents]
+        var events: [SectionedEvents]?
+        var weathers: CustomWeather? // description, icon, temp
+        var futures: [SectionedWeathers]?
     }
     
     let initialState: State
     let eventStore = EventStore()
+    let weather = Weather()
     let observeEvent = NotificationCenter.default.rx.notification(.EKEventStoreChanged)
     
     init() {
         print("init clock view reactor")
-        self.initialState = State(
-            currentTime: "Initializing clock",
-            events: [SectionedEvents(header: "something", items: [])]
-        )
+        self.initialState = State()
     }
     
     func mutate(action: Action) -> Observable<Mutation> {
@@ -59,7 +63,16 @@ class ViewReactor: Reactor {
                     }
                 })
                 .merge()
+        case .fetchWeather:
+            return Observable<Int>.interval(10, scheduler: MainScheduler.instance)
+                .flatMap { _ in self.requestCurrentWeather() }
+                .map { Mutation.receiveWeathers($0) }
+        case .fetchFutureWeather:
+            return self.requestFutureWeather().map { weathers in
+                Mutation.receiveFutureWeathers(weathers)
+            }
         }
+        
     }
     
     func reduce(state: State, mutation: Mutation) -> State {
@@ -75,6 +88,18 @@ class ViewReactor: Reactor {
             print(sectionedEvents.items.description)
             newState.events = [sectionedEvents]
             return newState
+        case let .receiveWeathers(weathers):
+            var newState = state
+            print("received current : ", weathers)
+            newState.weathers = weathers
+            return newState
+        case let .receiveFutureWeathers(weathers):
+            var newState = state
+            let filtered = weathers.filter { $0.time != nil }
+            let sectionedWeathers = SectionedWeathers(header: "something", items: filtered)
+            print("received futures : ", sectionedWeathers.items.description)
+            newState.futures = [sectionedWeathers]
+            return newState
         }
     }
     
@@ -85,7 +110,7 @@ class ViewReactor: Reactor {
             // 아래에 결과값을 그냥 dispose 시키면 바로 없어져버린다 (사실상 값을 subscribe 할 수가 없다)
             // 그렇다면, 어떻게 dispose 시켜줘야 하나? 패턴상으로는 diposeBag은 view controller에 위치하는 것으로 보인다.
             _ = self.eventStore.authorized.asObservable().subscribe { (authorized) in
-                print("authorized : ", authorized)
+                print("authorized events: ", authorized)
                 if let flag = authorized.element, flag == true {
                     observer.onNext(self.eventStore.fetchEventsDetail())
                     observer.onCompleted()
@@ -96,7 +121,53 @@ class ViewReactor: Reactor {
             
             return Disposables.create()
         })
-
     }
     
+    private func requestCurrentWeather() -> Observable<CustomWeather> {
+        print("request current weather")
+        
+        return Observable.create({ (observer) -> Disposable in
+            _ = self.weather.authorized.asObservable().subscribe { authorized in
+                print("authorized weather: ", authorized)
+                if let flag = authorized.element, flag == true, self.weather.coord.0 != 0 {
+                    self.weather.fetchCurrentWeatherData()
+                    _ = self.weather.currentWeather.asObservable().subscribe { current in
+                        print("current weather : ", current)
+                        if let element = current.element {
+                            observer.onNext(element)
+                            //observer.onCompleted()
+                        }
+                    }
+                }
+            }
+            
+            self.weather.verifyAuthorization()
+            
+            return Disposables.create()
+        })
+    }
+    
+    private func requestFutureWeather() -> Observable<[CustomWeather]> {
+        print("request future weather")
+        
+        return Observable.create({ (observer) -> Disposable in
+            _ = self.weather.authorized.asObservable().subscribe { authorized in
+                print("authorized future: ", authorized)
+                if let flag = authorized.element, flag == true, self.weather.coord.0 != 0 {
+                    self.weather.fetchFutureWeatherData()
+                    _ = self.weather.futures.asObservable().subscribe { futures in
+                        print("future weather : ", futures)
+                        if let element = futures.element {
+                            observer.onNext(element)
+                            observer.onCompleted()
+                        }
+                    }
+                }
+            }
+            
+            self.weather.verifyAuthorization()
+            
+            return Disposables.create()
+        })
+    }
 }
