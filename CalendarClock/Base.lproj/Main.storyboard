@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
-    <device id="retina4_7" orientation="portrait">
+    <device id="retina5_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
@@ -15,39 +15,39 @@
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="CalendarClock" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Clock" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="40" translatesAutoresizingMaskIntoConstraints="NO" id="fae-pZ-7by">
-                                <rect key="frame" x="16" y="46" width="343" height="80"/>
+                                <rect key="frame" x="16" y="54.666666666666657" width="382" height="80"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="80" id="8Zr-NX-pa3"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="CourierNewPSMT" family="Courier New" pointSize="80"/>
+                                <fontDescription key="fontDescription" name="Menlo-Regular" family="Menlo" pointSize="80"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="sHc-YJ-L4S">
-                                <rect key="frame" x="16" y="313.5" width="343" height="333.5"/>
+                                <rect key="frame" x="16" y="348" width="382" height="368"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="sectionIndexColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" rowHeight="80" id="Swx-Jw-OnP" customClass="EventCell" customModule="CalendarClock" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="343" height="80"/>
+                                        <rect key="frame" x="0.0" y="28" width="382" height="80"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Swx-Jw-OnP" id="nh8-aA-bhQ">
-                                            <rect key="frame" x="0.0" y="0.0" width="343" height="80"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="382" height="80"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vdP-Vb-pVD">
-                                                    <rect key="frame" x="15" y="17.5" width="42" height="21"/>
+                                                    <rect key="frame" x="15" y="17.666666666666668" width="42" height="21.000000000000004"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ip5-MF-h7p">
-                                                    <rect key="frame" x="15" y="38.5" width="53" height="27"/>
+                                                    <rect key="frame" x="15" y="38.666666666666664" width="53" height="26.999999999999993"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="22"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
@@ -95,34 +95,34 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Description of weather" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aNo-KG-Ciu">
-                                <rect key="frame" x="16" y="196" width="343" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aNo-KG-Ciu">
+                                <rect key="frame" x="16" y="204.66666666666666" width="382" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="oX5-Wo-fnR"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="CourierNewPSMT" family="Courier New" pointSize="15"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                                 <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Temperature" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MrH-He-aYj">
-                                <rect key="frame" x="235.5" y="173" width="100" height="33"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MrH-He-aYj">
+                                <rect key="frame" x="255" y="181.66666666666666" width="100" height="33"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="100" id="ZvS-xz-6i9"/>
                                     <constraint firstAttribute="height" constant="33" id="bh9-DL-wdI"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="CourierNewPSMT" family="Courier New" pointSize="30"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="30"/>
                                 <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="CZW-1h-27r">
-                                <rect key="frame" x="147.5" y="126" width="80" height="80"/>
+                                <rect key="frame" x="167" y="134.66666666666666" width="80" height="80"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="80" id="6gP-TF-ZEq"/>
                                     <constraint firstAttribute="width" constant="80" id="Wsk-fc-xTI"/>
                                 </constraints>
                             </imageView>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="45c-Z6-lrH">
-                                <rect key="frame" x="16" y="227.5" width="343" height="82"/>
+                                <rect key="frame" x="16" y="236" width="382" height="82"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="82" id="vmT-Kj-54q"/>
@@ -144,25 +144,24 @@
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="kGu-5r-Zly">
                                                     <rect key="frame" x="0.0" y="16" width="50" height="50"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="50" id="XVN-3e-ex8"/>
-                                                        <constraint firstAttribute="width" constant="50" id="ckB-WW-3n9"/>
+                                                        <constraint firstAttribute="width" secondItem="kGu-5r-Zly" secondAttribute="height" multiplier="1:1" id="I6H-Hz-st1"/>
                                                     </constraints>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xPJ-Jn-AJ8">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xPJ-Jn-AJ8">
                                                     <rect key="frame" x="0.0" y="65" width="50" height="17"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="17" id="OmB-SO-KEF"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" name="CourierNewPSMT" family="Courier New" pointSize="15"/>
+                                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                                                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AB8-rC-Bgr">
-                                                    <rect key="frame" x="2.5" y="0.0" width="45.5" height="17"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AB8-rC-Bgr">
+                                                    <rect key="frame" x="25" y="0.0" width="0.0" height="17"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="17" id="Frp-Kf-qey"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" name="CourierNewPSMT" family="Courier New" pointSize="15"/>
+                                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                                                     <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -176,6 +175,7 @@
                                             <constraint firstItem="xPJ-Jn-AJ8" firstAttribute="centerX" secondItem="UI2-2w-e3k" secondAttribute="centerX" id="VT0-eX-eDG"/>
                                             <constraint firstItem="xPJ-Jn-AJ8" firstAttribute="width" secondItem="UI2-2w-e3k" secondAttribute="width" id="VwW-nV-rnt"/>
                                             <constraint firstItem="kGu-5r-Zly" firstAttribute="centerX" secondItem="UI2-2w-e3k" secondAttribute="centerX" id="jDD-Nl-O1J"/>
+                                            <constraint firstItem="kGu-5r-Zly" firstAttribute="width" secondItem="UI2-2w-e3k" secondAttribute="width" id="jKl-sf-6ce"/>
                                         </constraints>
                                         <size key="customSize" width="50" height="82"/>
                                         <connections>
@@ -187,8 +187,8 @@
                                 </cells>
                             </collectionView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="hour / day" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UYt-5c-PW8">
-                                <rect key="frame" x="16" y="210" width="73" height="14"/>
-                                <fontDescription key="fontDescription" name="CourierNewPSMT" family="Courier New" pointSize="12"/>
+                                <rect key="frame" x="15.999999999999996" y="218.66666666666666" width="54.666666666666657" height="14"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
