@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		1FBBA74B1769F4C852975007 /* Pods_CalendarClock.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6D9247FE49AB737B887DFC6 /* Pods_CalendarClock.framework */; };
 		E703AC582238F2BB00E7FA4F /* SECRET.swift in Sources */ = {isa = PBXBuildFile; fileRef = E703AC572238F2BB00E7FA4F /* SECRET.swift */; };
+		E703AC602242215E00E7FA4F /* PieProgressLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E703AC5C2242215E00E7FA4F /* PieProgressLayer.swift */; };
+		E703AC612242215E00E7FA4F /* NSBezierPath+CGPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = E703AC5D2242215E00E7FA4F /* NSBezierPath+CGPath.swift */; };
+		E703AC622242215E00E7FA4F /* PieProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E703AC5E2242215E00E7FA4F /* PieProgressView.swift */; };
+		E703AC632242215E00E7FA4F /* CGFloat+Radians.swift in Sources */ = {isa = PBXBuildFile; fileRef = E703AC5F2242215E00E7FA4F /* CGFloat+Radians.swift */; };
 		E7272E32221A5234007ED8AD /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7272E31221A5234007ED8AD /* Event.swift */; };
 		E7272E34221A5E15007ED8AD /* Clock.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7272E33221A5E15007ED8AD /* Clock.swift */; };
 		E729285422170379002C4576 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E729285322170379002C4576 /* AppDelegate.swift */; };
@@ -25,6 +29,10 @@
 		A6D9247FE49AB737B887DFC6 /* Pods_CalendarClock.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CalendarClock.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AC414B3C2C1F373E13F07029 /* Pods-CalendarClock.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CalendarClock.release.xcconfig"; path = "Target Support Files/Pods-CalendarClock/Pods-CalendarClock.release.xcconfig"; sourceTree = "<group>"; };
 		E703AC572238F2BB00E7FA4F /* SECRET.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SECRET.swift; sourceTree = "<group>"; };
+		E703AC5C2242215E00E7FA4F /* PieProgressLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PieProgressLayer.swift; sourceTree = "<group>"; };
+		E703AC5D2242215E00E7FA4F /* NSBezierPath+CGPath.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSBezierPath+CGPath.swift"; sourceTree = "<group>"; };
+		E703AC5E2242215E00E7FA4F /* PieProgressView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PieProgressView.swift; sourceTree = "<group>"; };
+		E703AC5F2242215E00E7FA4F /* CGFloat+Radians.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGFloat+Radians.swift"; sourceTree = "<group>"; };
 		E7272E31221A5234007ED8AD /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 		E7272E33221A5E15007ED8AD /* Clock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Clock.swift; sourceTree = "<group>"; };
 		E729285022170379002C4576 /* CalendarClock.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CalendarClock.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -67,6 +75,17 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		E703AC5B2242215E00E7FA4F /* PieProgressView */ = {
+			isa = PBXGroup;
+			children = (
+				E703AC5C2242215E00E7FA4F /* PieProgressLayer.swift */,
+				E703AC5D2242215E00E7FA4F /* NSBezierPath+CGPath.swift */,
+				E703AC5E2242215E00E7FA4F /* PieProgressView.swift */,
+				E703AC5F2242215E00E7FA4F /* CGFloat+Radians.swift */,
+			);
+			path = PieProgressView;
+			sourceTree = "<group>";
+		};
 		E729284722170379002C4576 = {
 			isa = PBXGroup;
 			children = (
@@ -88,6 +107,7 @@
 		E729285222170379002C4576 /* CalendarClock */ = {
 			isa = PBXGroup;
 			children = (
+				E703AC5B2242215E00E7FA4F /* PieProgressView */,
 				E729285322170379002C4576 /* AppDelegate.swift */,
 				E7E5617122190F40000CA186 /* ViewReactor.swift */,
 				E703AC572238F2BB00E7FA4F /* SECRET.swift */,
@@ -241,9 +261,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E703AC612242215E00E7FA4F /* NSBezierPath+CGPath.swift in Sources */,
 				E7272E32221A5234007ED8AD /* Event.swift in Sources */,
+				E703AC602242215E00E7FA4F /* PieProgressLayer.swift in Sources */,
 				E729285622170379002C4576 /* ViewController.swift in Sources */,
+				E703AC622242215E00E7FA4F /* PieProgressView.swift in Sources */,
 				E7E5617222190F40000CA186 /* ViewReactor.swift in Sources */,
+				E703AC632242215E00E7FA4F /* CGFloat+Radians.swift in Sources */,
 				E703AC582238F2BB00E7FA4F /* SECRET.swift in Sources */,
 				E729285422170379002C4576 /* AppDelegate.swift in Sources */,
 				E771DB9E22350D26005CABE1 /* Weather.swift in Sources */,

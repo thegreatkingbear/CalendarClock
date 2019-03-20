@@ -17,18 +17,24 @@ import RxOptional
 class ViewController: UIViewController, StoryboardView {
     typealias Reactor = ViewReactor
     var disposeBag = DisposeBag()
+    
+    // event cell setup
     let dataSource = RxTableViewSectionedReloadDataSource<SectionedEvents>(configureCell:
     { dataSource, tableView, indexPath, item in
-        print(item)
+//        print(item)
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! EventCell
         cell.title!.text = "\(item.title)"
         cell.period!.text = "\(item.period())"
+        cell.pie?.isHidden = item.progress() < 0 ? true : false
+        cell.pie?.progress = item.progress() > 0 ? CGFloat(item.progress()) : 0
+//        print("\(item.title) progress : \(item.progress())")
         return cell
     })
 
+    // weather forecast cell setup
     let weatherSource = RxCollectionViewSectionedReloadDataSource<SectionedWeathers>(configureCell:
     { dataSource, collectionView, indexPath, item in
-        print(item)
+//        print(item)
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "WeatherCell", for: indexPath) as! WeatherCell
         cell.temp!.text = "\(item.temp!)"
         cell.icon!.image = item.icon
@@ -91,7 +97,7 @@ class ViewController: UIViewController, StoryboardView {
         
         reactor.state.asObservable().map { $0.events }
             .filterNil()
-            .distinctUntilChanged { $0 == $1 }
+            //.distinctUntilChanged { $0 == $1 }
             .bind(to: self.tableView!.rx.items(dataSource: self.dataSource))
             .disposed(by: self.disposeBag)
         
@@ -149,6 +155,7 @@ extension ObservableType where E: Sequence, E.Iterator.Element: Equatable {
 class EventCell: UITableViewCell {
     @IBOutlet weak var title: UILabel?
     @IBOutlet weak var period: UILabel?
+    @IBOutlet weak var pie: PieProgressView?
 }
 
 class WeatherCell: UICollectionViewCell {

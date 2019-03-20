@@ -108,13 +108,12 @@ struct CustomEvent: Equatable {
     var endDate = Date()
 
     static func ==(lhs: CustomEvent, rhs: CustomEvent) -> Bool {
-        return lhs.title == rhs.title && lhs.startDate == rhs.startDate && lhs.endDate == rhs.endDate
+        return lhs.title == rhs.title && lhs.startDate == rhs.startDate && lhs.endDate == rhs.endDate && lhs.progress() == rhs.progress()
     }
     
     func period() -> String {
         var calendar = Calendar.current
         calendar.timeZone = NSTimeZone.local
-        //print(calendar.dateComponents([.minute], from: startDate, to: endDate))
         var expression = "all day"
         if calendar.dateComponents([.minute], from: startDate, to: endDate).minute! < 1439 {
             let startHour = calendar.component(.hour, from: startDate)
@@ -130,6 +129,16 @@ struct CustomEvent: Equatable {
         }
         return expression
     }
+    
+    func progress() -> Double {
+        var calendar = Calendar.current
+        calendar.timeZone = NSTimeZone.local
+        let remaining = Double(calendar.dateComponents([.second], from: Date(), to: endDate).second!)
+        let duration = Double(calendar.dateComponents([.second], from: startDate, to: endDate).second!)
+        //print("\(self.title) remaining: \(remaining) duration: \(duration)")
+        return 1 - remaining / duration
+    }
+    
 }
 
 struct SectionedEvents: Equatable {
