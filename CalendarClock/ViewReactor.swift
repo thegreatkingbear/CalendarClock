@@ -53,30 +53,30 @@ class ViewReactor: Reactor {
             return Observable<Int>.interval(1, scheduler: MainScheduler.instance)
                 .map { _ in Mutation.clicks }
             
-        case .fetchEvents:
-            return self.requestCalendarEvents().map { events in
-                Mutation.receiveEvents(events)
-            }
+        case .fetchEvents: // interval : 1 minute = 60 seconds (considering clock changes every 1 minute)
+            return Observable<Int>.interval(60, scheduler: MainScheduler.instance)
+                .startWith(11) // to start immediately
+                .flatMap { _ in self.eventStore.authorized.asObservable() }
+                .filter { $0 == true }
+                .map { _ in self.eventStore.reset() }
+                .flatMap { _ in self.eventStore.fetchEventsDetail() }
+                .map { Mutation.receiveEvents($0) }
             
         case .observeEvents:
             return NotificationCenter.default.rx.notification(.EKEventStoreChanged)
-                .map({ (event) in
-                    self.requestCalendarEvents().map { events in
-                        Mutation.receiveEvents(events)
-                    }
-                })
-                .merge()
+                .flatMap { _ in self.eventStore.fetchEventsDetail() }
+                .map { Mutation.receiveEvents($0) }
             
-        case .fetchCurrentWeather:
-            return Observable<Int>.interval(10, scheduler: MainScheduler.instance)
-                .startWith(11)
+        case .fetchCurrentWeather: // interval : 1 hour = 3600 seconds
+            return Observable<Int>.interval(3600, scheduler: MainScheduler.instance)
+                .startWith(11) // to start immediately
                 .filter { _ in self.weather.coord.0 > 0 }
                 .flatMap { _ in self.weather.fetchCurrentWeatherData() }
                 .map { Mutation.receiveCurrentWeathers($0) }
             
-        case .fetchFutureWeather:
-            return Observable<Int>.interval(10, scheduler: MainScheduler.instance)
-                .startWith(11)
+        case .fetchFutureWeather: // interval : 2 hour = 7200 seconds
+            return Observable<Int>.interval(7200, scheduler: MainScheduler.instance)
+                .startWith(11) // to start immediately
                 .filter { _ in self.weather.coord.0 > 0 }
                 .flatMap { _ in self.weather.fetchFutureWeatherData() }
                 .map { Mutation.receiveFutureWeathers($0) }
@@ -122,27 +122,11 @@ class ViewReactor: Reactor {
         }
     }
     
-    private func requestCalendarEvents() -> Observable<[CustomEvent]> {
-        print("request calendar events")
-
-        return Observable.create({ (observer) -> Disposable in
-            // 아래에 결과값을 그냥 dispose 시키면 바로 없어져버린다 (사실상 값을 subscribe 할 수가 없다)
-            // 그렇다면, 어떻게 dispose 시켜줘야 하나? 패턴상으로는 diposeBag은 view controller에 위치하는 것으로 보인다.
-            _ = self.eventStore.authorized.asObservable().subscribe { (authorized) in
-                print("authorized events: ", authorized)
-                if let flag = authorized.element, flag == true {
-                    observer.onNext(self.eventStore.fetchEventsDetail())
-                    observer.onCompleted()
-                }
-            }
-            
-            self.eventStore.verifyAuthorityToEvents()
-            
-            return Disposables.create()
-        })
-    }
-        
     func requestLocationAuthorization() {
         self.weather.verifyAuthorization()
+    }
+    
+    func requestEventAuthorization() {
+        self.eventStore.verifyAuthorityToEvents()
     }
 }

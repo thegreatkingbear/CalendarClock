@@ -17,7 +17,8 @@ import RxOptional
 class ViewController: UIViewController, StoryboardView {
     typealias Reactor = ViewReactor
     var disposeBag = DisposeBag()
-    let dataSource = RxTableViewSectionedReloadDataSource<SectionedEvents>(configureCell: { dataSource, tableView, indexPath, item in
+    let dataSource = RxTableViewSectionedReloadDataSource<SectionedEvents>(configureCell:
+    { dataSource, tableView, indexPath, item in
         print(item)
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! EventCell
         cell.title!.text = "\(item.title)"
@@ -25,7 +26,8 @@ class ViewController: UIViewController, StoryboardView {
         return cell
     })
 
-    let weatherSource = RxCollectionViewSectionedReloadDataSource<SectionedWeathers>(configureCell: { dataSource, collectionView, indexPath, item in
+    let weatherSource = RxCollectionViewSectionedReloadDataSource<SectionedWeathers>(configureCell:
+    { dataSource, collectionView, indexPath, item in
         print(item)
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "WeatherCell", for: indexPath) as! WeatherCell
         cell.temp!.text = "\(item.temp!)"
@@ -52,6 +54,10 @@ class ViewController: UIViewController, StoryboardView {
     
     func bind(reactor: Reactor) {
         print("bind method called")
+        
+        // calendar event authorization request (for event service)
+        reactor.requestEventAuthorization()
+        
         // location authorization request (for weather service)
         reactor.requestLocationAuthorization()
         

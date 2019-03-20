@@ -42,8 +42,8 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>NSCalendarsUsageDescription</key>
-	<string></string>
+	<string>We need this to show you events with remaining time which is key feature of this app.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string>We need this to show you current weather and forecast.</string>
 </dict>
 </plist>
