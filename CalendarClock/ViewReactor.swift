@@ -57,8 +57,8 @@ class ViewReactor: Reactor {
             return Observable<Int>.interval(60, scheduler: MainScheduler.instance)
                 .startWith(11) // to start immediately
                 .flatMap { _ in self.eventStore.authorized.asObservable() }
-                .filter { $0 == true }
-                .map { _ in self.eventStore.reset() }
+                .filter { $0 == true } // only when authorized
+                .map { _ in self.eventStore.reset() } // to avoid 1019 error which occurs you fetch events just after aurhorizing
                 .flatMap { _ in self.eventStore.fetchEventsDetail() }
                 .map { Mutation.receiveEvents($0) }
             
@@ -101,7 +101,7 @@ class ViewReactor: Reactor {
             newState.currentTime = Clock.currentDateString()
             return newState
         case let .receiveEvents(events):
-            //print("request events : ", events!.description)
+            print("request events : ", events.description)
             var newState = state
             let sectionedEvents = SectionedEvents(header: "something", items: events)
             print(sectionedEvents.items.description)

@@ -61,19 +61,22 @@ class EventStore: EKEventStore {
     func fetchEventsDetail() -> Observable<[CustomEvent]> {
         let calendars = self.calendars(for: .event)
         var retEvents = [CustomEvent]()
+
         // Get the current calendar with local time zone
         var currentCalendar = Calendar.current
         currentCalendar.timeZone = NSTimeZone.local
+
         // Get today's beginning & end
         let dateFrom = Date()
         let dateStart = currentCalendar.startOfDay(for: Date())
         let dateTo = currentCalendar.date(byAdding: .day, value: 1, to: dateStart)!
-        // Note: Times are printed in UTC. Depending on where you live it won't print 00:00:00 but it will work with UTC times which can be converted to local time
+
+        // Note: Times are printed in UTC.
+        // Depending on where you live it won't print 00:00:00
+        // but it will work with UTC times which can be converted to local time
         
         for calendar in calendars {
-            
             let predicate = self.predicateForEvents(withStart: dateFrom as Date, end: dateTo as Date, calendars: [calendar])
-            
             let events = self.events(matching: predicate)
             
             for event in events {
@@ -91,10 +94,8 @@ class EventStore: EKEventStore {
         
         return Observable.create({ (observer) -> Disposable in
             
-            if retEvents.count > 0 {
-                observer.onNext(retEvents)
-                observer.onCompleted()
-            }
+            observer.onNext(retEvents)
+            observer.onCompleted()
             
             return Disposables.create()
         })
