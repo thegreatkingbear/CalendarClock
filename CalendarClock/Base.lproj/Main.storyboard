@@ -28,7 +28,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="sHc-YJ-L4S">
-                                <rect key="frame" x="16" y="379" width="343" height="268"/>
+                                <rect key="frame" x="16" y="389" width="343" height="258"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="sectionIndexColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -53,7 +53,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uqo-ZU-Bji" customClass="PieProgressView" customModule="CalendarClock" customModuleProvider="target">
-                                                    <rect key="frame" x="678" y="11" width="58" height="58"/>
+                                                    <rect key="frame" x="285" y="11" width="58" height="58"/>
                                                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <color key="tintColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <constraints>
@@ -96,7 +96,7 @@
                                 </prototypes>
                             </tableView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aNo-KG-Ciu">
-                                <rect key="frame" x="16" y="216" width="343" height="21"/>
+                                <rect key="frame" x="16" y="226" width="343" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="oX5-Wo-fnR"/>
                                 </constraints>
@@ -122,7 +122,7 @@
                                 </constraints>
                             </imageView>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="45c-Z6-lrH">
-                                <rect key="frame" x="16" y="267" width="343" height="82"/>
+                                <rect key="frame" x="16" y="277" width="343" height="82"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="82" id="vmT-Kj-54q"/>
@@ -187,7 +187,7 @@
                                 </cells>
                             </collectionView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="hour / day" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UYt-5c-PW8">
-                                <rect key="frame" x="16" y="249.5" width="54.5" height="14"/>
+                                <rect key="frame" x="16" y="259.5" width="54.5" height="14"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
@@ -201,7 +201,7 @@
                             <constraint firstItem="UYt-5c-PW8" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="E8P-wa-wCz"/>
                             <constraint firstItem="sHc-YJ-L4S" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="Gdu-Ct-LQK"/>
                             <constraint firstItem="fae-pZ-7by" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="JhG-eu-NDl"/>
-                            <constraint firstItem="aNo-KG-Ciu" firstAttribute="top" secondItem="CZW-1h-27r" secondAttribute="bottom" constant="-10" id="JzB-bL-y2r"/>
+                            <constraint firstItem="aNo-KG-Ciu" firstAttribute="top" secondItem="CZW-1h-27r" secondAttribute="bottom" id="JzB-bL-y2r"/>
                             <constraint firstItem="MrH-He-aYj" firstAttribute="leading" secondItem="CZW-1h-27r" secondAttribute="trailing" constant="8" id="PPY-wz-y6f"/>
                             <constraint firstItem="fae-pZ-7by" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="PTD-K2-0vj"/>
                             <constraint firstItem="MrH-He-aYj" firstAttribute="bottom" secondItem="CZW-1h-27r" secondAttribute="bottom" id="UAv-CY-SOG"/>
