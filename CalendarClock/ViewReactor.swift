@@ -18,6 +18,7 @@ class ViewReactor: Reactor {
         case startClicking
         case fetchEvents
         case observeEvents
+        case observeCalendarSetting
         case fetchCurrentWeather
         case fetchFutureWeather
         case observeFirstCurrentWeather
@@ -39,7 +40,7 @@ class ViewReactor: Reactor {
     }
     
     let initialState: State
-    let eventStore = EventStore()
+    let eventStore = EventStore.shared()
     let weather = Weather()
     
     init() {
@@ -59,12 +60,20 @@ class ViewReactor: Reactor {
                 .flatMap { _ in self.eventStore.authorized.asObservable() }
                 .filter { $0 == true } // only when authorized
                 .map { _ in self.eventStore.reset() } // to avoid 1019 error which occurs you fetch events just after aurhorizing
-                .flatMap { _ in self.eventStore.fetchEventsDetail() }
+                .flatMap { _ in self.eventStore.selectedCalendars.asObservable() }
+                .flatMap { self.eventStore.fetchEventsDetail(selected: $0) }
                 .map { Mutation.receiveEvents($0) }
             
         case .observeEvents:
             return NotificationCenter.default.rx.notification(.EKEventStoreChanged)
-                .flatMap { _ in self.eventStore.fetchEventsDetail() }
+                .flatMap { _ in self.eventStore.selectedCalendars.asObservable() }
+                .flatMap { self.eventStore.fetchEventsDetail(selected: $0) }
+                .map { Mutation.receiveEvents($0) }
+            
+        case .observeCalendarSetting:
+            return self.eventStore.selectedCalendars.asObservable()
+                .debug()
+                .flatMap { self.eventStore.fetchEventsDetail(selected: $0)}
                 .map { Mutation.receiveEvents($0) }
             
         case .fetchCurrentWeather: // interval : 1 hour = 3600 seconds
@@ -101,22 +110,18 @@ class ViewReactor: Reactor {
             newState.currentTime = Clock.currentDateString()
             return newState
         case let .receiveEvents(events):
-            print("request events : ", events.description)
             var newState = state
-            let sectionedEvents = SectionedEvents(header: "something", items: events)
-            print(sectionedEvents.items.description)
+            let sectionedEvents = SectionedEvents(header: "events", items: events)
             newState.events = [sectionedEvents]
             return newState
         case let .receiveCurrentWeathers(weathers):
             var newState = state
-            print("received current : ", weathers)
             newState.weathers = weathers
             return newState
         case let .receiveFutureWeathers(weathers):
             var newState = state
             let filtered = weathers.filter { $0.time != nil }
             let sectionedWeathers = SectionedWeathers(header: "something", items: filtered)
-            print("received futures : ", sectionedWeathers.items.description)
             newState.futures = [sectionedWeathers]
             return newState
         }

@@ -52,7 +52,6 @@ class Weather: CLLocationManager, CLLocationManagerDelegate {
 
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let locValue: CLLocationCoordinate2D = manager.location?.coordinate else { return }
-        //print("locations = \(locValue.latitude) \(locValue.longitude)")
         self.coord = (locValue.latitude, locValue.longitude)
         
         // alert first time location fetch to the steam

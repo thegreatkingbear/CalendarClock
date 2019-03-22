@@ -13,15 +13,27 @@ import RxDataSources
 
 class EventStore: EKEventStore {
     
-    // MARK: - Variables
+    // Variables to be globally watched
     var authorized = BehaviorSubject<Bool>(value: false)
+    var selectedCalendars = BehaviorSubject<[String]>(value: [])
+    
+    // Singleton
+    private static var sharedEventStore: EventStore = {
+        let eventStore = EventStore()
+        
+        return eventStore
+    }()
+    
+    class func shared() -> EventStore {
+        print(sharedEventStore)
+        return sharedEventStore
+    }
     
     // Initialization
-    override init() {
+    private override init() {
         super.init()
         
         print("init event store")
-        
     }
     
     func verifyAuthorityToEvents() {
@@ -41,7 +53,6 @@ class EventStore: EKEventStore {
             authorized.onCompleted()
             break
         }
-        
     }
     
     func requestAccessToEvents() {
@@ -58,8 +69,81 @@ class EventStore: EKEventStore {
         }
     }
     
-    func fetchEventsDetail() -> Observable<[CustomEvent]> {
-        let calendars = self.calendars(for: .event)
+    func fetchCalendars() -> Observable<[CalendarSetting]> {
+        print("fetch calendars")
+        return Observable.create({ (observer) -> Disposable in
+            let calendars = self.calendars(for: .event)
+            
+            var retCalendars = [CalendarSetting]()
+            for calendar in calendars {
+                retCalendars
+                    .append(
+                        CalendarSetting(
+                            owner: calendar.source.title,
+                            name: calendar.title,
+                            identifier: calendar.calendarIdentifier,
+                            isSelected: true))
+            }
+            
+            print("fetched calendars : \(retCalendars)")
+            observer.onNext(retCalendars)
+            observer.onCompleted()
+            
+            return Disposables.create()
+        })
+        
+    }
+    
+    func saveToUserDefaults(settings: [SectionedEventSettings]) {
+        let encoder = JSONEncoder()
+        if let encoded = try? encoder.encode(settings) {
+            UserDefaults.standard.set(encoded, forKey: "calendarSettings")
+        }
+    }
+    
+    func loadFromUserDefaults() -> Observable<[SectionedEventSettings]> {
+        return Observable.create({ (observer) -> Disposable in
+            if let loaded = UserDefaults.standard.object(forKey: "calendarSettings") as? Data {
+                let decoder = JSONDecoder()
+                if let decodedCalendars = try? decoder.decode([SectionedEventSettings].self, from: loaded) {
+                    observer.onNext(decodedCalendars)
+                    observer.onCompleted()
+                } else {
+                    observer.onNext([])
+                    observer.onCompleted()
+                }
+            } else {
+                observer.onNext([])
+                observer.onCompleted()
+            }
+            return Disposables.create()
+        })
+    }
+    
+    func collectSelectedCalendarIdentifiers(calendars: [SectionedEventSettings]) {
+        var identifiers = [String]()
+        for sectionedEventSetting in calendars {
+            for item in sectionedEventSetting.items {
+                if item.isSelected {
+                    identifiers.append(item.identifier)
+                }
+            }
+        }
+        print("collected identifiers : \(identifiers)")
+        self.selectedCalendars.onNext(identifiers)
+    }
+    
+    func fetchEventsDetail(selected: [String]) -> Observable<[CustomEvent]> {
+        print("selected : \(selected)")
+        var calendars = self.calendars(for: .event)
+        if selected.count > 0 {
+            calendars = []
+            for identifier in selected {
+                if let calendar = self.calendar(withIdentifier: identifier) {
+                    calendars.append(calendar)
+                }
+            }
+        }
         var retEvents = [CustomEvent]()
 
         // Get the current calendar with local time zone
@@ -136,7 +220,6 @@ struct CustomEvent: Equatable {
         calendar.timeZone = NSTimeZone.local
         let remaining = Double(calendar.dateComponents([.second], from: Date(), to: endDate).second!)
         let duration = Double(calendar.dateComponents([.second], from: startDate, to: endDate).second!)
-        //print("\(self.title) remaining: \(remaining) duration: \(duration)")
         return 1 - remaining / duration
     }
     
@@ -155,6 +238,35 @@ extension SectionedEvents: SectionModelType {
     typealias Item = CustomEvent
     
     init(original: SectionedEvents, items: [Item]) {
+        self = original
+        self.items = items
+    }
+}
+
+struct CalendarSetting: Equatable, Codable {
+    var owner = ""
+    var name = ""
+    var identifier = ""
+    var isSelected = true
+    
+    static func ==(lhs: CalendarSetting, rhs: CalendarSetting) -> Bool {
+        return lhs.identifier == rhs.identifier
+    }
+}
+
+struct SectionedEventSettings: Equatable, Codable {
+    var header: String
+    var items: [Item]
+    
+    static func ==(lhs: SectionedEventSettings, rhs: SectionedEventSettings) -> Bool {
+        return lhs.header == rhs.header && lhs.items == rhs.items
+    }
+}
+
+extension SectionedEventSettings: SectionModelType {
+    typealias Item = CalendarSetting
+    
+    init(original: SectionedEventSettings, items: [Item]) {
         self = original
         self.items = items
     }
