@@ -44,7 +44,6 @@ class ViewReactor: Reactor {
     let weather = Weather()
     
     init() {
-        print("init clock view reactor")
         self.initialState = State()
     }
     
@@ -72,7 +71,6 @@ class ViewReactor: Reactor {
             
         case .observeCalendarSetting:
             return self.eventStore.selectedCalendars.asObservable()
-                .debug()
                 .flatMap { self.eventStore.fetchEventsDetail(selected: $0)}
                 .map { Mutation.receiveEvents($0) }
             

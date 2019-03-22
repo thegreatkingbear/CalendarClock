@@ -25,8 +25,6 @@ class Weather: CLLocationManager, CLLocationManagerDelegate {
     override init() {
         super.init()
         
-        print("init event store")
-        
         self.delegate = self
         self.desiredAccuracy = kCLLocationAccuracyBest
         self.startUpdatingLocation()
@@ -35,14 +33,12 @@ class Weather: CLLocationManager, CLLocationManagerDelegate {
     func verifyAuthorization() {
         
         let status = CLLocationManager.authorizationStatus()
-        print("location authorization status : ", status)
         
         switch (status) {
         case .notDetermined:
             requestAuthorization()
             break
         case .authorizedAlways, .authorizedWhenInUse:
-            print("already authorized(weather)")
             break
         case .restricted, .denied:
             break
@@ -56,7 +52,6 @@ class Weather: CLLocationManager, CLLocationManagerDelegate {
         
         // alert first time location fetch to the steam
         if isFirstLocationFetch {
-            print("first time fetch")
             isFirstLocationFetch = false
             self.locationJustFetched.onNext(true)
             self.locationJustFetched.onCompleted()

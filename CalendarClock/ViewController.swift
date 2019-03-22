@@ -57,8 +57,6 @@ class ViewController: UIViewController, StoryboardView, UIPopoverPresentationCon
     }
     
     func bind(reactor: Reactor) {
-        print("bind method called")
-        
         // calendar event authorization request (for event service)
         reactor.requestEventAuthorization()
         

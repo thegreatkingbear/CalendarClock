@@ -25,15 +25,12 @@ class EventStore: EKEventStore {
     }()
     
     class func shared() -> EventStore {
-        print(sharedEventStore)
         return sharedEventStore
     }
     
     // Initialization
     private override init() {
         super.init()
-        
-        print("init event store")
     }
     
     func verifyAuthorityToEvents() {
@@ -45,7 +42,6 @@ class EventStore: EKEventStore {
             requestAccessToEvents()
             break
         case .authorized:
-            print("already authorized(event)")
             authorized.onNext(true)
             break
         case .restricted, .denied:
@@ -58,7 +54,6 @@ class EventStore: EKEventStore {
     func requestAccessToEvents() {
         requestAccess(to: EKEntityType.event) { (accessGranted, error) in
             if accessGranted {
-                print("access granted")
                 self.authorized.onNext(true)
             } else if error != nil {
                 self.authorized.onError(error!)
@@ -70,7 +65,6 @@ class EventStore: EKEventStore {
     }
     
     func fetchCalendars() -> Observable<[CalendarSetting]> {
-        print("fetch calendars")
         return Observable.create({ (observer) -> Disposable in
             let calendars = self.calendars(for: .event)
             
@@ -85,7 +79,6 @@ class EventStore: EKEventStore {
                             isSelected: true))
             }
             
-            print("fetched calendars : \(retCalendars)")
             observer.onNext(retCalendars)
             observer.onCompleted()
             
@@ -129,12 +122,10 @@ class EventStore: EKEventStore {
                 }
             }
         }
-        print("collected identifiers : \(identifiers)")
         self.selectedCalendars.onNext(identifiers)
     }
     
     func fetchEventsDetail(selected: [String]) -> Observable<[CustomEvent]> {
-        print("selected : \(selected)")
         var calendars = self.calendars(for: .event)
         if selected.count > 0 {
             calendars = []

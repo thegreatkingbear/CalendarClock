@@ -51,7 +51,6 @@ class EventSettingViewReactor: Reactor {
         switch mutation {
         case let .receiveCalendars(calendars):
             var newState = state
-            print("received calendars : \(calendars)")
             newState.calendars = calendars
             return newState
         case let .updateCalendar(index):

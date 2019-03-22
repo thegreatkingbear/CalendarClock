@@ -43,8 +43,6 @@ class EventSettingViewController: UIViewController, StoryboardView {
     }
     
     func bind(reactor: Reactor) {
-        print("event setting bind called")
-        
         // fetch calendars
         reactor.action.onNext(.fetchCalendars)
         
