@@ -23,6 +23,7 @@ class ViewReactor: Reactor {
         case fetchFutureWeather
         case observeFirstCurrentWeather
         case observeFirstFutureWeather
+        case displayLock
     }
     
     enum Mutation {
@@ -30,6 +31,7 @@ class ViewReactor: Reactor {
         case receiveEvents([CustomEvent])
         case receiveCurrentWeathers(CustomWeather)
         case receiveFutureWeathers([CustomWeather])
+        case displayLocked
     }
     
     struct State {
@@ -37,12 +39,13 @@ class ViewReactor: Reactor {
         var events: [SectionedEvents]?
         var weathers: CustomWeather? // description, icon, temp
         var futures: [SectionedWeathers]?
+        var isDisplayLocked: Bool?
     }
     
     let initialState: State
     let eventStore = EventStore.shared()
     let weather = Weather()
-    
+
     init() {
         self.initialState = State()
     }
@@ -98,6 +101,8 @@ class ViewReactor: Reactor {
                 .flatMap { _ in self.weather.fetchFutureWeatherData() }
                 .map { Mutation.receiveFutureWeathers($0) }
             
+        case .displayLock:
+            return Observable.just(Mutation.displayLocked)
         }
     }
     
@@ -121,6 +126,11 @@ class ViewReactor: Reactor {
             let filtered = weathers.filter { $0.time != nil }
             let sectionedWeathers = SectionedWeathers(header: "something", items: filtered)
             newState.futures = [sectionedWeathers]
+            return newState
+        case .displayLocked:
+            var newState = state
+            let isDisplayLocked = state.isDisplayLocked ?? false
+            newState.isDisplayLocked = isDisplayLocked ? false : true
             return newState
         }
     }

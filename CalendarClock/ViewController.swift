@@ -13,6 +13,7 @@ import RxSwift
 import RxCocoa
 import RxDataSources
 import RxOptional
+import Toast_Swift
 
 class ViewController: UIViewController, StoryboardView, UIPopoverPresentationControllerDelegate {
     typealias Reactor = ViewReactor
@@ -46,6 +47,10 @@ class ViewController: UIViewController, StoryboardView, UIPopoverPresentationCon
     @IBOutlet weak var currentIcon: UIImageView?
     @IBOutlet weak var collectionView: UICollectionView?
     @IBOutlet weak var calendarSettingButton: UIButton?
+    @IBOutlet weak var displayLockButton: UIButton?
+    
+    // display on is UI feature 
+    var insomnia = Insomnia(mode: .whenCharging)
     
     // hide status bar for aestheic reason
     override open var prefersStatusBarHidden: Bool {
@@ -54,6 +59,12 @@ class ViewController: UIViewController, StoryboardView, UIPopoverPresentationCon
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // toast style setting
+        var style = ToastStyle()
+        style.backgroundColor = .darkGray
+        style.titleColor = .lightGray
+        ToastManager.shared.style = style
     }
     
     func bind(reactor: Reactor) {
@@ -149,6 +160,7 @@ class ViewController: UIViewController, StoryboardView, UIPopoverPresentationCon
             .bind(to: self.collectionView!.rx.items(dataSource: self.weatherSource))
             .disposed(by: self.disposeBag)
         
+        // calendar setting button (in case there is no cell in event table)
         self.calendarSettingButton!.rx.tap
             .subscribe(onNext: {
                 calendarSettingView.reactor = EventSettingViewReactor()
@@ -159,6 +171,26 @@ class ViewController: UIViewController, StoryboardView, UIPopoverPresentationCon
                 popover.sourceRect = self.calendarSettingButton!.bounds
                 popover.permittedArrowDirections = .down
                 self.present(calendarSettingView, animated: true, completion: nil)
+            })
+            .disposed(by: self.disposeBag)
+        
+        // display lock button wired
+        self.displayLockButton!.rx.tap
+            .map { Reactor.Action.displayLock }
+            .bind(to: reactor.action)
+            .disposed(by: self.disposeBag)
+        
+        // display always-on or when-charging UI logic
+        reactor.state.asObservable().map { $0.isDisplayLocked }
+            .distinctUntilChanged()
+            .filterNil()
+            .subscribe( onNext: {
+                print($0)
+                let imageName = $0 ? "locked" : "unlocked"
+                let text = $0 ? "display is set to always on" : "display keeps on only when charging"
+                self.displayLockButton!.setImage(UIImage(named: imageName), for: .normal)
+                self.insomnia.mode = $0 ? .always : .whenCharging
+                self.view.makeToast(text)
             })
             .disposed(by: self.disposeBag)
     }

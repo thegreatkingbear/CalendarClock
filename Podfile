@@ -13,4 +13,5 @@ target 'CalendarClock' do
   pod 'SwiftyJSON', '~> 4.2'
   pod 'SwiftyImage'
   pod 'RxOptional'
+  pod 'Toast-Swift', '~> 4.0.0'
 end

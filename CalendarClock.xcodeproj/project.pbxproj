@@ -24,6 +24,7 @@
 		E729285E2217037B002C4576 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E729285C2217037B002C4576 /* LaunchScreen.storyboard */; };
 		E771DB9E22350D26005CABE1 /* Weather.swift in Sources */ = {isa = PBXBuildFile; fileRef = E771DB9D22350D26005CABE1 /* Weather.swift */; };
 		E7E5617222190F40000CA186 /* ViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7E5617122190F40000CA186 /* ViewReactor.swift */; };
+		E7E9DEC02249F35D00C0CA5A /* Insomnia.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7E9DEBF2249F35D00C0CA5A /* Insomnia.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,6 +49,7 @@
 		E729285F2217037B002C4576 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E771DB9D22350D26005CABE1 /* Weather.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Weather.swift; sourceTree = "<group>"; };
 		E7E5617122190F40000CA186 /* ViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewReactor.swift; sourceTree = "<group>"; };
+		E7E9DEBF2249F35D00C0CA5A /* Insomnia.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Insomnia.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,6 +113,7 @@
 		E729285222170379002C4576 /* CalendarClock */ = {
 			isa = PBXGroup;
 			children = (
+				E7E9DEBF2249F35D00C0CA5A /* Insomnia.swift */,
 				E703AC5B2242215E00E7FA4F /* PieProgressView */,
 				E729285322170379002C4576 /* AppDelegate.swift */,
 				E729285522170379002C4576 /* ViewController.swift */,
@@ -217,6 +220,7 @@
 				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyImage/SwiftyImage.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
+				"${BUILT_PRODUCTS_DIR}/Toast-Swift/Toast_Swift.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
@@ -232,6 +236,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Toast_Swift.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -270,6 +275,7 @@
 				E703AC652243364000E7FA4F /* EventSettingViewController.swift in Sources */,
 				E703AC612242215E00E7FA4F /* NSBezierPath+CGPath.swift in Sources */,
 				E7272E32221A5234007ED8AD /* Event.swift in Sources */,
+				E7E9DEC02249F35D00C0CA5A /* Insomnia.swift in Sources */,
 				E703AC67224336EC00E7FA4F /* EventSettingViewReactor.swift in Sources */,
 				E703AC602242215E00E7FA4F /* PieProgressLayer.swift in Sources */,
 				E729285622170379002C4576 /* ViewController.swift in Sources */,

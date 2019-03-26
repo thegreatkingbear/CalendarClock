@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -200,6 +200,14 @@
                                 </constraints>
                                 <state key="normal" image="setting_icon"/>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y4K-Ke-YbA">
+                                <rect key="frame" x="301" y="640" width="25" height="25"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="25" id="C1z-O7-Qft"/>
+                                    <constraint firstAttribute="height" constant="25" id="RKi-Ei-RfK"/>
+                                </constraints>
+                                <state key="normal" image="unlocked"/>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -209,6 +217,7 @@
                             <constraint firstItem="wme-4e-3At" firstAttribute="top" secondItem="sHc-YJ-L4S" secondAttribute="bottom" constant="8" id="CHh-82-qwm"/>
                             <constraint firstItem="UYt-5c-PW8" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="E8P-wa-wCz"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="wme-4e-3At" secondAttribute="trailing" constant="16" id="FQw-Ng-Dss"/>
+                            <constraint firstItem="y4K-Ke-YbA" firstAttribute="top" secondItem="sHc-YJ-L4S" secondAttribute="bottom" constant="8" id="GaO-Ts-4vy"/>
                             <constraint firstItem="sHc-YJ-L4S" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="Gdu-Ct-LQK"/>
                             <constraint firstItem="fae-pZ-7by" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="JhG-eu-NDl"/>
                             <constraint firstItem="aNo-KG-Ciu" firstAttribute="top" secondItem="CZW-1h-27r" secondAttribute="bottom" id="JzB-bL-y2r"/>
@@ -219,6 +228,7 @@
                             <constraint firstItem="45c-Z6-lrH" firstAttribute="top" secondItem="aNo-KG-Ciu" secondAttribute="bottom" constant="30" id="Vzx-Aa-3ec"/>
                             <constraint firstItem="fae-pZ-7by" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" multiplier="0.25" id="aVT-fQ-IC6"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="sHc-YJ-L4S" secondAttribute="trailing" constant="16" id="akN-ln-JBV"/>
+                            <constraint firstItem="wme-4e-3At" firstAttribute="leading" secondItem="y4K-Ke-YbA" secondAttribute="trailing" constant="8" id="dEs-5x-xZs"/>
                             <constraint firstItem="aNo-KG-Ciu" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="eVy-kV-yMC"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="fae-pZ-7by" secondAttribute="trailing" constant="16" id="kNY-eg-nWO"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="aNo-KG-Ciu" secondAttribute="trailing" constant="16" id="pau-cV-ZcU"/>
@@ -236,6 +246,7 @@
                         <outlet property="currentDescription" destination="aNo-KG-Ciu" id="20O-HF-ZFc"/>
                         <outlet property="currentIcon" destination="CZW-1h-27r" id="5BD-ox-IlL"/>
                         <outlet property="currentTemperature" destination="MrH-He-aYj" id="kMr-mO-rrH"/>
+                        <outlet property="displayLockButton" destination="y4K-Ke-YbA" id="AP9-Pf-amK"/>
                         <outlet property="tableView" destination="sHc-YJ-L4S" id="Cl5-VC-cyM"/>
                     </connections>
                 </viewController>
@@ -255,7 +266,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="300" height="350"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="checkmark" indentationWidth="10" reuseIdentifier="CalendarCell" id="Vzu-yl-pDa" customClass="EventSettingCell" customModule="CalendarClock" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="checkmark" indentationWidth="10" reuseIdentifier="CalendarCell" id="Vzu-yl-pDa" customClass="EventSettingCell" customModule="CalendarClock" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="300" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Vzu-yl-pDa" id="Rfj-Jv-uTP">
@@ -302,5 +313,6 @@
     </scenes>
     <resources>
         <image name="setting_icon" width="596" height="596"/>
+        <image name="unlocked" width="35" height="35"/>
     </resources>
 </document>
