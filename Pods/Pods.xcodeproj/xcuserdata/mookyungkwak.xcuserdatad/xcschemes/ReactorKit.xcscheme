@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "42752403819AA6634730C4385E9A023B"
+               BuildableName = "ReactorKit.framework"
                BlueprintName = "ReactorKit"
-               ReferencedContainer = "container:Pods.xcodeproj"
-               BuildableName = "ReactorKit.framework">
+               ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
