@@ -18,6 +18,7 @@ class ViewReactor: Reactor {
         case startClicking
         case fetchEvents
         case observeEvents
+        case loadCalendarSetting
         case observeCalendarSetting
         case fetchCurrentWeather
         case fetchFutureWeather
@@ -32,6 +33,7 @@ class ViewReactor: Reactor {
         case receiveCurrentWeathers(CustomWeather)
         case receiveFutureWeathers([CustomWeather])
         case displayLocked
+        case calendarSettingsLoaded([SectionedEventSettings])
     }
     
     struct State {
@@ -71,6 +73,10 @@ class ViewReactor: Reactor {
                 .flatMap { _ in self.eventStore.selectedCalendars.asObservable() }
                 .flatMap { self.eventStore.fetchEventsDetail(selected: $0) }
                 .map { Mutation.receiveEvents($0) }
+            
+        case .loadCalendarSetting:
+            return self.eventStore.loadFromUserDefaults()
+                .map { Mutation.calendarSettingsLoaded($0) }
             
         case .observeCalendarSetting:
             return self.eventStore.selectedCalendars.asObservable()
@@ -131,6 +137,11 @@ class ViewReactor: Reactor {
             var newState = state
             let isDisplayLocked = state.isDisplayLocked ?? false
             newState.isDisplayLocked = isDisplayLocked ? false : true
+            return newState
+        case let .calendarSettingsLoaded(settings):
+            let newState = state
+            // this seems not good. I know. But event store holds the variable which emits changes in calendar settings
+            self.eventStore.collectSelectedCalendarIdentifiers(calendars: settings)
             return newState
         }
     }

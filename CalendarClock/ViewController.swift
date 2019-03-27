@@ -81,6 +81,9 @@ class ViewController: UIViewController, StoryboardView, UIPopoverPresentationCon
         // start clock
         reactor.action.onNext(.startClicking)
         
+        // load calendar settings
+        reactor.action.onNext(.loadCalendarSetting)
+        
         // fetch events
         reactor.action.onNext(.fetchEvents)
         
