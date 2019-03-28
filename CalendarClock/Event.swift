@@ -11,26 +11,28 @@ import EventKit
 import RxSwift
 import RxDataSources
 
-class EventStore: EKEventStore {
+class CalendarEvent {
     
     // Variables to be globally watched
     var authorized = BehaviorSubject<Bool>(value: false)
     var selectedCalendars = BehaviorSubject<[String]>(value: [])
     
+    var store = EKEventStore()
+    
     // Singleton
-    private static var sharedEventStore: EventStore = {
-        let eventStore = EventStore()
+    private static var sharedEvent: CalendarEvent = {
+        let event = CalendarEvent()
         
-        return eventStore
+        return event
     }()
     
-    class func shared() -> EventStore {
-        return sharedEventStore
+    class func shared() -> CalendarEvent {
+        return sharedEvent
     }
     
     // Initialization
-    private override init() {
-        super.init()
+    private init() {
+        
     }
     
     func verifyAuthorityToEvents() {
@@ -52,8 +54,9 @@ class EventStore: EKEventStore {
     }
     
     func requestAccessToEvents() {
-        requestAccess(to: EKEntityType.event) { (accessGranted, error) in
+        store.requestAccess(to: EKEntityType.event) { (accessGranted, error) in
             if accessGranted {
+                self.store = EKEventStore() // without reallocating event store here, it makes error fetching event data in the first run
                 self.authorized.onNext(true)
             } else if error != nil {
                 self.authorized.onError(error!)
@@ -66,7 +69,7 @@ class EventStore: EKEventStore {
     
     func fetchCalendars() -> Observable<[CalendarSetting]> {
         return Observable.create({ (observer) -> Disposable in
-            let calendars = self.calendars(for: .event)
+            let calendars = CalendarEvent.shared().store.calendars(for: .event)
             
             var retCalendars = [CalendarSetting]()
             for calendar in calendars {
@@ -126,11 +129,11 @@ class EventStore: EKEventStore {
     }
     
     func fetchEventsDetail(selected: [String]) -> Observable<[CustomEvent]> {
-        var calendars = self.calendars(for: .event)
+        var calendars = CalendarEvent.shared().store.calendars(for: .event)
         if selected.count > 0 {
             calendars = []
             for identifier in selected {
-                if let calendar = self.calendar(withIdentifier: identifier) {
+                if let calendar = store.calendar(withIdentifier: identifier) {
                     calendars.append(calendar)
                 }
             }
@@ -151,8 +154,8 @@ class EventStore: EKEventStore {
         // but it will work with UTC times which can be converted to local time
         
         for calendar in calendars {
-            let predicate = self.predicateForEvents(withStart: dateFrom as Date, end: dateTo as Date, calendars: [calendar])
-            let events = self.events(matching: predicate)
+            let predicate = store.predicateForEvents(withStart: dateFrom as Date, end: dateTo as Date, calendars: [calendar])
+            let events = store.events(matching: predicate)
             
             for event in events {
                 retEvents
@@ -187,6 +190,7 @@ struct CustomEvent: Equatable {
         return lhs.title == rhs.title && lhs.startDate == rhs.startDate && lhs.endDate == rhs.endDate && lhs.progress() == rhs.progress()
     }
     
+    // this method looks like belonging to view model property
     func period() -> String {
         var calendar = Calendar.current
         calendar.timeZone = NSTimeZone.local

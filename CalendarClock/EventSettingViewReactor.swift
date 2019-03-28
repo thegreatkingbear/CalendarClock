@@ -29,7 +29,7 @@ class EventSettingViewReactor: Reactor {
     }
     
     let initialState: State
-    let eventStore = EventStore.shared()
+    let eventStore = CalendarEvent.shared()
     
     init() {
         self.initialState = State()

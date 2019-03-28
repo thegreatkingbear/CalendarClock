@@ -45,7 +45,7 @@ class ViewReactor: Reactor {
     }
     
     let initialState: State
-    let eventStore = EventStore.shared()
+    let eventStore = CalendarEvent.shared()
     let weather = Weather()
 
     init() {
@@ -63,7 +63,6 @@ class ViewReactor: Reactor {
                 .startWith(11) // to start immediately
                 .flatMap { _ in self.eventStore.authorized.asObservable() }
                 .filter { $0 == true } // only when authorized
-                .map { _ in self.eventStore.reset() } // to avoid 1019 error which occurs you fetch events just after aurhorizing
                 .flatMap { _ in self.eventStore.selectedCalendars.asObservable() }
                 .flatMap { self.eventStore.fetchEventsDetail(selected: $0) }
                 .map { Mutation.receiveEvents($0) }
