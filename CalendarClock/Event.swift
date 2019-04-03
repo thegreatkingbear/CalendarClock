@@ -245,7 +245,7 @@ struct CalendarSetting: Equatable, Codable {
     var isSelected = true
     
     static func ==(lhs: CalendarSetting, rhs: CalendarSetting) -> Bool {
-        return lhs.identifier == rhs.identifier
+        return lhs.identifier == rhs.identifier && lhs.isSelected == rhs.isSelected
     }
 }
 
