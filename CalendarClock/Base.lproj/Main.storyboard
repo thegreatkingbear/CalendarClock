@@ -41,13 +41,13 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vdP-Vb-pVD">
-                                                    <rect key="frame" x="15" y="17.5" width="42" height="21"/>
+                                                    <rect key="frame" x="15" y="17.5" width="252" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ip5-MF-h7p">
-                                                    <rect key="frame" x="15" y="38.5" width="53" height="27"/>
+                                                    <rect key="frame" x="15" y="39" width="252" height="26.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="22"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
@@ -80,6 +80,8 @@
                                             <constraints>
                                                 <constraint firstItem="uqo-ZU-Bji" firstAttribute="centerY" secondItem="nh8-aA-bhQ" secondAttribute="centerY" id="2lq-DD-7Gg"/>
                                                 <constraint firstItem="Ip5-MF-h7p" firstAttribute="leading" secondItem="nh8-aA-bhQ" secondAttribute="leading" constant="15" id="8n7-pr-Jr8"/>
+                                                <constraint firstItem="uqo-ZU-Bji" firstAttribute="leading" secondItem="vdP-Vb-pVD" secondAttribute="trailing" constant="8" id="F5h-Uk-hhW"/>
+                                                <constraint firstItem="uqo-ZU-Bji" firstAttribute="leading" secondItem="Ip5-MF-h7p" secondAttribute="trailing" constant="8" id="RAD-du-g9K"/>
                                                 <constraint firstItem="Ip5-MF-h7p" firstAttribute="centerY" secondItem="nh8-aA-bhQ" secondAttribute="centerY" multiplier="1.3" id="XJy-A1-w40"/>
                                                 <constraint firstItem="vdP-Vb-pVD" firstAttribute="centerY" secondItem="nh8-aA-bhQ" secondAttribute="centerY" multiplier="0.7" id="b1l-O5-yM0"/>
                                                 <constraint firstAttribute="trailing" secondItem="uqo-ZU-Bji" secondAttribute="trailing" constant="10" id="hOC-pQ-ctP"/>
@@ -217,12 +219,6 @@
                                     </connections>
                                 </collectionReusableView>
                             </collectionView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="hour / day" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UYt-5c-PW8">
-                                <rect key="frame" x="16" y="259.5" width="54.5" height="14"/>
-                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
-                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wme-4e-3At">
                                 <rect key="frame" x="334" y="640" width="25" height="25"/>
                                 <constraints>
@@ -243,10 +239,8 @@
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="sHc-YJ-L4S" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="2YI-bA-XZs"/>
-                            <constraint firstItem="45c-Z6-lrH" firstAttribute="top" secondItem="UYt-5c-PW8" secondAttribute="bottom" constant="3.5" id="2i1-f0-iRb"/>
                             <constraint firstItem="sHc-YJ-L4S" firstAttribute="top" secondItem="45c-Z6-lrH" secondAttribute="bottom" constant="20" id="4B5-me-Ltl"/>
                             <constraint firstItem="wme-4e-3At" firstAttribute="top" secondItem="sHc-YJ-L4S" secondAttribute="bottom" constant="8" id="CHh-82-qwm"/>
-                            <constraint firstItem="UYt-5c-PW8" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="E8P-wa-wCz"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="wme-4e-3At" secondAttribute="trailing" constant="16" id="FQw-Ng-Dss"/>
                             <constraint firstItem="y4K-Ke-YbA" firstAttribute="top" secondItem="sHc-YJ-L4S" secondAttribute="bottom" constant="8" id="GaO-Ts-4vy"/>
                             <constraint firstItem="sHc-YJ-L4S" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="Gdu-Ct-LQK"/>
