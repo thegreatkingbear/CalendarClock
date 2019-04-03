@@ -31,14 +31,23 @@ class ViewController: UIViewController, StoryboardView, UIPopoverPresentationCon
     })
 
     // weather forecast cell setup
-    let weatherSource = RxCollectionViewSectionedReloadDataSource<SectionedWeathers>(configureCell:
-    { dataSource, collectionView, indexPath, item in
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "WeatherCell", for: indexPath) as! WeatherCell
-        cell.temp!.text = "\(item.temp!)"
-        cell.icon!.image = item.icon
-        cell.time!.text = "\(item.time!)"
-        return cell
-    })
+    let weatherSource = RxCollectionViewSectionedReloadDataSource<SectionedWeathers>(
+        configureCell: // cell
+        { dataSource, collectionView, indexPath, item in
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "WeatherCell", for: indexPath) as! WeatherCell
+            cell.temp!.text = "\(item.temp!)"
+            cell.icon!.image = item.icon
+            cell.time!.text = "\(item.hour!)"
+            return cell
+        },
+        configureSupplementaryView: // section header
+        { dataSource, collectionView, kind, indexPath in
+            let section = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "WeatherHeader", for: indexPath) as! WeatherHeader
+            section.day!.text = "\(dataSource[indexPath.section].header.0)"
+            section.weekday!.text = "\(dataSource[indexPath.section].header.1)"
+            return section
+        }
+    )
     
     @IBOutlet weak var clockLabel: UILabel?
     @IBOutlet weak var tableView: UITableView?
@@ -207,7 +216,6 @@ extension ViewController: UITableViewDelegate {
     }
 }
 
-
 extension ObservableType where E: Sequence, E.Iterator.Element: Equatable {
     func distinctUntilChanged() -> Observable<E> {
         return distinctUntilChanged { (lhs, rhs) -> Bool in
@@ -228,6 +236,11 @@ class WeatherCell: UICollectionViewCell {
     @IBOutlet weak var icon: UIImageView?
     @IBOutlet weak var time: UILabel?
     @IBOutlet weak var temp: UILabel?
+}
+
+class WeatherHeader: UICollectionViewCell {
+    @IBOutlet weak var day: UILabel?
+    @IBOutlet weak var weekday: UILabel?
 }
 
 // this is because iphone does not pop over in ipad style.

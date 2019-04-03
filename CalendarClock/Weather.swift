@@ -117,7 +117,9 @@ class Weather: CLLocationManager, CLLocationManagerDelegate {
                             let iconName = dict["weather"][0]["icon"].description
                             item.icon = UIImage(named: iconName)!.with(color: UIColor.gray)
                             item.temp = String(round(Double(dict["main"]["temp"].description)!)).split(separator: ".")[0] + "°"
-                            item.time = self.convertUnixTimeToString(dt: Double(dict["dt"].description)!)
+                            item.day = self.convertUnixTimeToDay(dt: Double(dict["dt"].description)!)
+                            item.weekday = self.convertUnixTimeToWeekday(dt: Double(dict["dt"].description)!)
+                            item.hour = self.convertUnixTimeToHour(dt: Double(dict["dt"].description)!)
                             ret.append(item)
                         }
                         observer.onNext(ret)
@@ -130,29 +132,52 @@ class Weather: CLLocationManager, CLLocationManagerDelegate {
         })
     }
     
-    // convert dt to 2 + 2 digit string
-    private func convertUnixTimeToString(dt: Double) -> String {
+    // convert dt to day string
+    private func convertUnixTimeToDay(dt: Double) -> String {
         let date = Date(timeIntervalSince1970: dt)
-        let hour = Calendar.current.component(.hour, from: date)
         let day = Calendar.current.component(.day, from: date)
-        return String(format:"%02d", hour) + "/" + String(format:"%02d", day)
+        return String(day)
     }
     
+    private func convertUnixTimeToWeekday(dt: Double) -> String {
+        let date = Date(timeIntervalSince1970: dt)
+        // I could not undestand the logic in the weekday of Apple calendar
+//        let day = Calendar.current.component(.weekday, from: date)
+//        print(day)
+//        print(Calendar.current.shortWeekdaySymbols[day])
+//        return String(Calendar.current.shortWeekdaySymbols[day])
+        
+        // I just used this here. I think it is not automatically translated by user's locale
+        let formatter = DateFormatter()
+        formatter.dateFormat = "E"
+        return formatter.string(from: date)
+        
+    }
+
+    // convert dt to hour string
+    private func convertUnixTimeToHour(dt: Double) -> String {
+        let date = Date(timeIntervalSince1970: dt)
+        let hour = Calendar.current.component(.hour, from: date)
+        return String(format:"%02d", hour)
+    }
+
 }
 
 struct CustomWeather: Equatable {
     var description: String?
     var icon: UIImage?
     var temp: String?
-    var time: String?
+    var day: String?
+    var weekday: String?
+    var hour: String?
 
     static func ==(lhs: CustomWeather, rhs: CustomWeather) -> Bool {
-        return lhs.description == rhs.description && lhs.temp == rhs.temp && lhs.time == rhs.time
+        return lhs.description == rhs.description && lhs.temp == rhs.temp && lhs.day == rhs.day && lhs.hour == rhs.day
     }
 }
 
 struct SectionedWeathers: Equatable {
-    var header: String
+    var header: (String, String)
     var items: [Item]
     
     static func ==(lhs: SectionedWeathers, rhs: SectionedWeathers) -> Bool {

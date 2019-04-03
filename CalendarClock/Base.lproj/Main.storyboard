@@ -105,9 +105,8 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MrH-He-aYj">
-                                <rect key="frame" x="235.5" y="193" width="100" height="33"/>
+                                <rect key="frame" x="235.5" y="193" width="0.0" height="33"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="100" id="ZvS-xz-6i9"/>
                                     <constraint firstAttribute="height" constant="33" id="bh9-DL-wdI"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="30"/>
@@ -129,13 +128,13 @@
                                 </constraints>
                                 <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="cbQ-Uk-Yar">
                                     <size key="itemSize" width="50" height="82"/>
-                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="headerReferenceSize" width="50" height="50"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="WeatherCell" id="UI2-2w-e3k" customClass="WeatherCell" customModule="CalendarClock" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="50" height="82"/>
+                                        <rect key="frame" x="50" y="0.0" width="50" height="82"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
                                             <rect key="frame" x="0.0" y="0.0" width="50" height="82"/>
@@ -185,6 +184,38 @@
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
+                                <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="WeatherHeader" id="074-OY-qAu" customClass="WeatherHeader" customModule="CalendarClock" customModuleProvider="target">
+                                    <rect key="frame" x="0.0" y="0.0" width="50" height="82"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CcH-TI-rfh">
+                                            <rect key="frame" x="4" y="20" width="42" height="22"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mon" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Q3W-KL-K9u">
+                                            <rect key="frame" x="6" y="45" width="38" height="23"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="Q3W-KL-K9u" firstAttribute="top" secondItem="074-OY-qAu" secondAttribute="top" constant="45" id="6YC-ZF-wLi"/>
+                                        <constraint firstAttribute="trailing" secondItem="CcH-TI-rfh" secondAttribute="trailing" constant="4" id="7Cu-XP-wGh"/>
+                                        <constraint firstAttribute="trailing" secondItem="Q3W-KL-K9u" secondAttribute="trailing" constant="6" id="IMg-9b-LgP"/>
+                                        <constraint firstAttribute="bottom" secondItem="CcH-TI-rfh" secondAttribute="bottom" constant="40" id="JFJ-r4-Ck3"/>
+                                        <constraint firstItem="Q3W-KL-K9u" firstAttribute="leading" secondItem="074-OY-qAu" secondAttribute="leading" constant="6" id="Uw6-Vh-Grj"/>
+                                        <constraint firstItem="CcH-TI-rfh" firstAttribute="top" secondItem="074-OY-qAu" secondAttribute="top" constant="20" id="dZA-uN-sLJ"/>
+                                        <constraint firstItem="CcH-TI-rfh" firstAttribute="leading" secondItem="074-OY-qAu" secondAttribute="leading" constant="4" id="hMU-Pn-E6M"/>
+                                        <constraint firstAttribute="bottom" secondItem="Q3W-KL-K9u" secondAttribute="bottom" constant="14" id="t5p-Im-kXU"/>
+                                    </constraints>
+                                    <connections>
+                                        <outlet property="day" destination="CcH-TI-rfh" id="gCg-Un-NO6"/>
+                                        <outlet property="weekday" destination="Q3W-KL-K9u" id="PcD-wz-X8T"/>
+                                    </connections>
+                                </collectionReusableView>
                             </collectionView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="hour / day" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UYt-5c-PW8">
                                 <rect key="frame" x="16" y="259.5" width="54.5" height="14"/>

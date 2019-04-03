@@ -128,9 +128,8 @@ class ViewReactor: Reactor {
             return newState
         case let .receiveFutureWeathers(weathers):
             var newState = state
-            let filtered = weathers.filter { $0.time != nil }
-            let sectionedWeathers = SectionedWeathers(header: "something", items: filtered)
-            newState.futures = [sectionedWeathers]
+            let filtered = weathers.filter { $0.day != nil } // to avoid crash when it fetches first time
+            newState.futures = self.collectSectionedWeathers(weathers: filtered)
             return newState
         case .displayLocked:
             var newState = state
@@ -151,5 +150,22 @@ class ViewReactor: Reactor {
     
     func requestEventAuthorization() {
         self.eventStore.verifyAuthorityToEvents()
+    }
+    
+    func collectSectionedWeathers(weathers: [CustomWeather]) -> [SectionedWeathers] {
+        // reorganize fetched weathers into sectioned table view rows
+        let sorted = weathers.sorted { $0.day! < $1.day! }
+        let grouped = sorted.reduce([SectionedWeathers]()) {
+            guard var last = $0.last else { return [SectionedWeathers(header: ($1.day!, $1.weekday!), items: [$1])] }
+            var collection = $0
+            if last.header.0 == $1.day {
+                last.items += [$1]
+                collection[collection.count - 1] = last
+            } else {
+                collection += [SectionedWeathers(header: ($1.day!, $1.weekday!), items: [$1])]
+            }
+            return collection
+        }
+        return grouped
     }
 }
