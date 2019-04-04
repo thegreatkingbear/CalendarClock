@@ -133,10 +133,10 @@ class Weather: CLLocationManager, CLLocationManagerDelegate {
     }
     
     // convert dt to day string
-    private func convertUnixTimeToDay(dt: Double) -> String {
+    private func convertUnixTimeToDay(dt: Double) -> Int {
         let date = Date(timeIntervalSince1970: dt)
         let day = Calendar.current.component(.day, from: date)
-        return String(day)
+        return day
     }
     
     private func convertUnixTimeToWeekday(dt: Double) -> String {
@@ -167,12 +167,12 @@ struct CustomWeather: Equatable {
     var description: String?
     var icon: UIImage?
     var temp: String?
-    var day: String?
+    var day: Int?
     var weekday: String?
     var hour: String?
 
     static func ==(lhs: CustomWeather, rhs: CustomWeather) -> Bool {
-        return lhs.description == rhs.description && lhs.temp == rhs.temp && lhs.day == rhs.day && lhs.hour == rhs.day
+        return lhs.description == rhs.description && lhs.temp == rhs.temp && lhs.day == rhs.day && lhs.hour == rhs.hour
     }
 }
 

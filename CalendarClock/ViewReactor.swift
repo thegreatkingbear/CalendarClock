@@ -156,13 +156,13 @@ class ViewReactor: Reactor {
         // reorganize fetched weathers into sectioned table view rows
         let sorted = weathers.sorted { $0.day! < $1.day! }
         let grouped = sorted.reduce([SectionedWeathers]()) {
-            guard var last = $0.last else { return [SectionedWeathers(header: ($1.day!, $1.weekday!), items: [$1])] }
+            guard var last = $0.last else { return [SectionedWeathers(header: (String($1.day!), $1.weekday!), items: [$1])] }
             var collection = $0
-            if last.header.0 == $1.day {
+            if last.header.0 == String($1.day!) {
                 last.items += [$1]
                 collection[collection.count - 1] = last
             } else {
-                collection += [SectionedWeathers(header: ($1.day!, $1.weekday!), items: [$1])]
+                collection += [SectionedWeathers(header: (String($1.day!), $1.weekday!), items: [$1])]
             }
             return collection
         }
