@@ -141,13 +141,9 @@ class Weather: CLLocationManager, CLLocationManagerDelegate {
     
     private func convertUnixTimeToWeekday(dt: Double) -> String {
         let date = Date(timeIntervalSince1970: dt)
-        // I could not undestand the logic in the weekday of Apple calendar
-//        let day = Calendar.current.component(.weekday, from: date)
-//        print(day)
-//        print(Calendar.current.shortWeekdaySymbols[day])
-//        return String(Calendar.current.shortWeekdaySymbols[day])
         
-        // I just used this here. I think it is not automatically translated by user's locale
+        // I just used this here instead of Apple's weekday property.
+        // It works well with user's locale
         let formatter = DateFormatter()
         formatter.dateFormat = "E"
         return formatter.string(from: date)

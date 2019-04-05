@@ -15,7 +15,7 @@ import RxDataSources
 import RxOptional
 import Toast_Swift
 
-class ViewController: UIViewController, StoryboardView, UIPopoverPresentationControllerDelegate {
+class ViewController: UIViewController, StoryboardView, UIPopoverPresentationControllerDelegate, UICollectionViewDelegateFlowLayout {
     typealias Reactor = ViewReactor
     var disposeBag = DisposeBag()
     
@@ -23,6 +23,8 @@ class ViewController: UIViewController, StoryboardView, UIPopoverPresentationCon
     let dataSource = RxTableViewSectionedReloadDataSource<SectionedEvents>(configureCell:
     { dataSource, tableView, indexPath, item in
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! EventCell
+        // for double check purpose (ocassionally interface builder setting does not comply)
+        cell.backgroundColor = UIColor.clear
         cell.title!.text = "\(item.title)"
         cell.period!.text = "\(item.period())"
         cell.pie?.isHidden = item.progress() < 0 ? true : false
@@ -74,6 +76,9 @@ class ViewController: UIViewController, StoryboardView, UIPopoverPresentationCon
         style.backgroundColor = .darkGray
         style.titleColor = .lightGray
         ToastManager.shared.style = style
+        
+        // for double check purpose (ocassionally interface builder setting does not comply)
+        self.collectionView!.backgroundColor = UIColor.clear
     }
     
     func bind(reactor: Reactor) {
@@ -207,12 +212,19 @@ class ViewController: UIViewController, StoryboardView, UIPopoverPresentationCon
             .disposed(by: self.disposeBag)
     }
 
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return self.view.traitCollection.horizontalSizeClass == .compact ? CGSize(width: 50, height: 82) : CGSize(width: 100, height: 164)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        return self.view.traitCollection.horizontalSizeClass == .compact ? CGSize(width: 50, height: 82) : CGSize(width: 100, height: 164)
+    }
 }
 
 // event table view cell height
 extension ViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 80
+        return self.view.traitCollection.horizontalSizeClass == .compact ? 80 : 160
     }
 }
 
