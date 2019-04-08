@@ -213,18 +213,28 @@ class ViewController: UIViewController, StoryboardView, UIPopoverPresentationCon
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return self.view.traitCollection.horizontalSizeClass == .compact ? CGSize(width: 50, height: 82) : CGSize(width: 100, height: 164)
+        return
+            self.view.traitCollection.horizontalSizeClass == .regular &&
+            self.view.traitCollection.verticalSizeClass == .regular
+                ? CGSize(width: 80, height: 131) : CGSize(width: 50, height: 82)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return self.view.traitCollection.horizontalSizeClass == .compact ? CGSize(width: 50, height: 82) : CGSize(width: 100, height: 164)
+        return
+            self.view.traitCollection.horizontalSizeClass == .regular &&
+            self.view.traitCollection.verticalSizeClass == .regular
+                ? CGSize(width: 80, height: 131) : CGSize(width: 50, height: 82)
     }
+    
 }
 
 // event table view cell height
 extension ViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return self.view.traitCollection.horizontalSizeClass == .compact ? 80 : 160
+        return
+            self.view.traitCollection.horizontalSizeClass == .regular &&
+            self.view.traitCollection.verticalSizeClass == .regular
+                ? 160 : 80
     }
 }
 
