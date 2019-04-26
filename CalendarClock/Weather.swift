@@ -120,6 +120,7 @@ class Weather: CLLocationManager, CLLocationManagerDelegate {
                             item.day = self.convertUnixTimeToDay(dt: Double(dict["dt"].description)!)
                             item.weekday = self.convertUnixTimeToWeekday(dt: Double(dict["dt"].description)!)
                             item.hour = self.convertUnixTimeToHour(dt: Double(dict["dt"].description)!)
+                            item.unixTime = Int(dict["dt"].description)!
                             ret.append(item)
                         }
                         observer.onNext(ret)
@@ -166,9 +167,10 @@ struct CustomWeather: Equatable {
     var day: Int?
     var weekday: String?
     var hour: String?
+    var unixTime: Int?
 
     static func ==(lhs: CustomWeather, rhs: CustomWeather) -> Bool {
-        return lhs.description == rhs.description && lhs.temp == rhs.temp && lhs.day == rhs.day && lhs.hour == rhs.hour
+        return lhs.description == rhs.description && lhs.temp == rhs.temp && lhs.day == rhs.day && lhs.hour == rhs.hour && lhs.unixTime == rhs.unixTime
     }
 }
 

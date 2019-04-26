@@ -154,7 +154,7 @@ class ViewReactor: Reactor {
     
     func collectSectionedWeathers(weathers: [CustomWeather]) -> [SectionedWeathers] {
         // reorganize fetched weathers into sectioned table view rows
-        let sorted = weathers.sorted { $0.day! < $1.day! }
+        let sorted = weathers.sorted { $0.unixTime! < $1.unixTime! }
         let grouped = sorted.reduce([SectionedWeathers]()) {
             guard var last = $0.last else { return [SectionedWeathers(header: (String($1.day!), $1.weekday!), items: [$1])] }
             var collection = $0
