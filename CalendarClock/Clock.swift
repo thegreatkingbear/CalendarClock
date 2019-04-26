@@ -26,6 +26,14 @@ class Clock {
             flick = true
             now = String(format:"%02d", hour) + " " + String(format:"%02d", minute)
         }
+        
         return now
+    }
+    
+    static func currentDayString() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.timeZone = NSTimeZone.local
+        dateFormatter.dateFormat = "EEEE, d MMMM"
+        return dateFormatter.string(from: Date())
     }
 }

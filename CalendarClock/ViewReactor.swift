@@ -38,6 +38,7 @@ class ViewReactor: Reactor {
     
     struct State {
         var currentTime: String?
+        var currentDate: String?
         var events: [SectionedEvents]?
         var weathers: CustomWeather? // description, icon, temp
         var futures: [SectionedWeathers]?
@@ -116,6 +117,7 @@ class ViewReactor: Reactor {
         case .clicks:
             var newState = state
             newState.currentTime = Clock.currentDateString()
+            newState.currentDate = Clock.currentDayString()
             return newState
         case let .receiveEvents(events):
             var newState = state

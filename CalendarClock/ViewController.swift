@@ -52,6 +52,7 @@ class ViewController: UIViewController, StoryboardView, UIPopoverPresentationCon
     )
     
     @IBOutlet weak var clockLabel: UILabel?
+    @IBOutlet weak var dateLabel: UILabel?
     @IBOutlet weak var tableView: UITableView?
     @IBOutlet weak var currentDescription: UILabel?
     @IBOutlet weak var currentTemperature: UILabel?
@@ -116,7 +117,13 @@ class ViewController: UIViewController, StoryboardView, UIPopoverPresentationCon
             .distinctUntilChanged()
             .bind(to: self.clockLabel!.rx.text)
             .disposed(by: self.disposeBag)
-        
+
+        // date state to view
+        reactor.state.asObservable().map { $0.currentDate }
+            .distinctUntilChanged()
+            .bind(to: self.dateLabel!.rx.text)
+            .disposed(by: self.disposeBag)
+
         // events state to view
         self.tableView!.rx.setDelegate(self).disposed(by: self.disposeBag)
         
