@@ -33,7 +33,7 @@ class Clock {
     static func currentDayString() -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.timeZone = NSTimeZone.local
-        dateFormatter.dateFormat = "EEEE, d MMMM"
+        dateFormatter.dateFormat = "EEEE, MMMM d" // 금요일, 6월 14 or Friday, June 14
         return dateFormatter.string(from: Date())
     }
 }
