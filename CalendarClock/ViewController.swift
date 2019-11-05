@@ -61,6 +61,25 @@ class ViewController: UIViewController, StoryboardView, UIPopoverPresentationCon
     @IBOutlet weak var calendarSettingButton: UIButton?
     @IBOutlet weak var displayLockButton: UIButton?
     
+    // constraints for changing orientations
+    @IBOutlet weak var clockXPositionLandscape: NSLayoutConstraint?
+    @IBOutlet weak var clockXPositionPortrait: NSLayoutConstraint?
+    @IBOutlet weak var currentIconXPositionLandscape: NSLayoutConstraint?
+    @IBOutlet weak var currentIconXPositionPortrait: NSLayoutConstraint?
+    @IBOutlet weak var currentDescriptionWidthLandscape: NSLayoutConstraint?
+    @IBOutlet weak var currentDescriptionWidthPortrait: NSLayoutConstraint?
+    @IBOutlet weak var weathersWidthLandscape: NSLayoutConstraint?
+    @IBOutlet weak var weathersWidthPortrait: NSLayoutConstraint?
+    @IBOutlet weak var weathersXPositionLandscape: NSLayoutConstraint?
+    @IBOutlet weak var weathersXPositionPortrait: NSLayoutConstraint?
+    @IBOutlet weak var tableWidthLandscape: NSLayoutConstraint?
+    @IBOutlet weak var tableWidthPortrait: NSLayoutConstraint?
+    @IBOutlet weak var tableXPositionLandscape: NSLayoutConstraint?
+    @IBOutlet weak var tableXPositionPortrait: NSLayoutConstraint?
+    @IBOutlet weak var tableTopLandscape: NSLayoutConstraint?
+    @IBOutlet weak var tableTopPortrait: NSLayoutConstraint?
+    
+    
     // display on is UI feature 
     var insomnia = Insomnia(mode: .whenCharging)
     
@@ -80,6 +99,14 @@ class ViewController: UIViewController, StoryboardView, UIPopoverPresentationCon
         
         // for double check purpose (ocassionally interface builder setting does not comply)
         self.collectionView!.backgroundColor = UIColor.clear
+        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(true)
+        
+        // to detect orientations at start-up
+        self.applyOrientations()
     }
     
     func bind(reactor: Reactor) {
@@ -219,6 +246,69 @@ class ViewController: UIViewController, StoryboardView, UIPopoverPresentationCon
             .disposed(by: self.disposeBag)
     }
 
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        coordinator.animate(alongsideTransition: { (_) in
+        }) { (_) in
+            self.applyOrientations()
+        }
+        super.viewWillTransition(to: size, with: coordinator)
+    }
+    
+    func applyOrientations() {
+        let orient = UIApplication.shared.statusBarOrientation
+        
+        switch orient {
+        case .portrait:
+            self.applyPortraitConstraint()
+            break
+        case .portraitUpsideDown:
+            self.applyPortraitConstraint()
+            break
+        default:
+            self.applyLandscapeConstraint()
+        }
+    }
+    
+    func applyPortraitConstraint() {
+        self.view.addConstraint(clockXPositionPortrait!)
+        self.view.addConstraint(currentIconXPositionPortrait!)
+        self.view.addConstraint(currentDescriptionWidthPortrait!)
+        self.view.addConstraint(weathersWidthPortrait!)
+        self.view.addConstraint(weathersXPositionPortrait!)
+        self.view.addConstraint(tableWidthPortrait!)
+        self.view.addConstraint(tableXPositionPortrait!)
+        self.view.addConstraint(tableTopPortrait!)
+        
+        self.view.removeConstraint(clockXPositionLandscape!)
+        self.view.removeConstraint(currentIconXPositionLandscape!)
+        self.view.removeConstraint(currentDescriptionWidthLandscape!)
+        self.view.removeConstraint(weathersWidthLandscape!)
+        self.view.removeConstraint(weathersXPositionLandscape!)
+        self.view.removeConstraint(tableWidthLandscape!)
+        self.view.removeConstraint(tableXPositionLandscape!)
+        self.view.removeConstraint(tableTopLandscape!)
+    }
+    
+    func applyLandscapeConstraint() {
+        self.view.addConstraint(clockXPositionLandscape!)
+        self.view.addConstraint(currentIconXPositionLandscape!)
+        self.view.addConstraint(currentDescriptionWidthLandscape!)
+        self.view.addConstraint(weathersWidthLandscape!)
+        self.view.addConstraint(weathersXPositionLandscape!)
+        self.view.addConstraint(tableWidthLandscape!)
+        self.view.addConstraint(tableXPositionLandscape!)
+        self.view.addConstraint(tableTopLandscape!)
+
+        self.view.removeConstraint(clockXPositionPortrait!)
+        self.view.removeConstraint(currentIconXPositionPortrait!)
+        self.view.removeConstraint(currentDescriptionWidthPortrait!)
+        self.view.removeConstraint(weathersWidthPortrait!)
+        self.view.removeConstraint(weathersXPositionPortrait!)
+        self.view.removeConstraint(tableWidthPortrait!)
+        self.view.removeConstraint(tableXPositionPortrait!)
+        self.view.removeConstraint(tableTopPortrait!)
+    }
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return
             self.view.traitCollection.horizontalSizeClass == .regular &&

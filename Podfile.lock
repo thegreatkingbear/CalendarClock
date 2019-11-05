@@ -30,7 +30,7 @@ DEPENDENCIES:
   - Toast-Swift (~> 4.0.0)
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  trunk:
     - Alamofire
     - Differentiator
     - ReactorKit
@@ -58,4 +58,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 8bb9c65b14622ed07c9f57a05c8a458a33764a96
 
-COCOAPODS: 1.6.1
+COCOAPODS: 1.8.4

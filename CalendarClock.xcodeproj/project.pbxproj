@@ -3,12 +3,12 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		1FBBA74B1769F4C852975007 /* Pods_CalendarClock.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6D9247FE49AB737B887DFC6 /* Pods_CalendarClock.framework */; };
-		E703AC582238F2BB00E7FA4F /* SECRET.swift in Sources */ = {isa = PBXBuildFile; fileRef = E703AC572238F2BB00E7FA4F /* SECRET.swift */; };
+		2A2A3C11236FEC32008FF51D /* SECRET.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A2A3C10236FEC32008FF51D /* SECRET.swift */; };
 		E703AC602242215E00E7FA4F /* PieProgressLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E703AC5C2242215E00E7FA4F /* PieProgressLayer.swift */; };
 		E703AC612242215E00E7FA4F /* NSBezierPath+CGPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = E703AC5D2242215E00E7FA4F /* NSBezierPath+CGPath.swift */; };
 		E703AC622242215E00E7FA4F /* PieProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E703AC5E2242215E00E7FA4F /* PieProgressView.swift */; };
@@ -29,9 +29,9 @@
 
 /* Begin PBXFileReference section */
 		151CBF811C3C5387659C86A5 /* Pods-CalendarClock.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CalendarClock.debug.xcconfig"; path = "Target Support Files/Pods-CalendarClock/Pods-CalendarClock.debug.xcconfig"; sourceTree = "<group>"; };
+		2A2A3C10236FEC32008FF51D /* SECRET.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SECRET.swift; sourceTree = "<group>"; };
 		A6D9247FE49AB737B887DFC6 /* Pods_CalendarClock.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CalendarClock.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AC414B3C2C1F373E13F07029 /* Pods-CalendarClock.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CalendarClock.release.xcconfig"; path = "Target Support Files/Pods-CalendarClock/Pods-CalendarClock.release.xcconfig"; sourceTree = "<group>"; };
-		E703AC572238F2BB00E7FA4F /* SECRET.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SECRET.swift; sourceTree = "<group>"; };
 		E703AC5C2242215E00E7FA4F /* PieProgressLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PieProgressLayer.swift; sourceTree = "<group>"; };
 		E703AC5D2242215E00E7FA4F /* NSBezierPath+CGPath.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSBezierPath+CGPath.swift"; sourceTree = "<group>"; };
 		E703AC5E2242215E00E7FA4F /* PieProgressView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PieProgressView.swift; sourceTree = "<group>"; };
@@ -126,8 +126,8 @@
 				E729285722170379002C4576 /* Main.storyboard */,
 				E729285A2217037B002C4576 /* Assets.xcassets */,
 				E729285C2217037B002C4576 /* LaunchScreen.storyboard */,
-				E703AC572238F2BB00E7FA4F /* SECRET.swift */,
 				E729285F2217037B002C4576 /* Info.plist */,
+				2A2A3C10236FEC32008FF51D /* SECRET.swift */,
 			);
 			path = CalendarClock;
 			sourceTree = "<group>";
@@ -207,36 +207,11 @@
 			files = (
 			);
 			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-CalendarClock/Pods-CalendarClock-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
-				"${BUILT_PRODUCTS_DIR}/Differentiator/Differentiator.framework",
-				"${BUILT_PRODUCTS_DIR}/ReactorKit/ReactorKit.framework",
-				"${BUILT_PRODUCTS_DIR}/RxAtomic/RxAtomic.framework",
-				"${BUILT_PRODUCTS_DIR}/RxCocoa/RxCocoa.framework",
-				"${BUILT_PRODUCTS_DIR}/RxDataSources/RxDataSources.framework",
-				"${BUILT_PRODUCTS_DIR}/RxOptional/RxOptional.framework",
-				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
-				"${BUILT_PRODUCTS_DIR}/SwiftyImage/SwiftyImage.framework",
-				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
-				"${BUILT_PRODUCTS_DIR}/Toast-Swift/Toast_Swift.framework",
+				"${PODS_ROOT}/Target Support Files/Pods-CalendarClock/Pods-CalendarClock-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-			);
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Differentiator.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReactorKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxAtomic.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxCocoa.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxDataSources.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxOptional.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyImage.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Toast_Swift.framework",
+				"${PODS_ROOT}/Target Support Files/Pods-CalendarClock/Pods-CalendarClock-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -275,6 +250,7 @@
 				E703AC652243364000E7FA4F /* EventSettingViewController.swift in Sources */,
 				E703AC612242215E00E7FA4F /* NSBezierPath+CGPath.swift in Sources */,
 				E7272E32221A5234007ED8AD /* Event.swift in Sources */,
+				2A2A3C11236FEC32008FF51D /* SECRET.swift in Sources */,
 				E7E9DEC02249F35D00C0CA5A /* Insomnia.swift in Sources */,
 				E703AC67224336EC00E7FA4F /* EventSettingViewReactor.swift in Sources */,
 				E703AC602242215E00E7FA4F /* PieProgressLayer.swift in Sources */,
@@ -282,7 +258,6 @@
 				E703AC622242215E00E7FA4F /* PieProgressView.swift in Sources */,
 				E7E5617222190F40000CA186 /* ViewReactor.swift in Sources */,
 				E703AC632242215E00E7FA4F /* CGFloat+Radians.swift in Sources */,
-				E703AC582238F2BB00E7FA4F /* SECRET.swift in Sources */,
 				E729285422170379002C4576 /* AppDelegate.swift in Sources */,
 				E771DB9E22350D26005CABE1 /* Weather.swift in Sources */,
 				E7272E34221A5E15007ED8AD /* Clock.swift in Sources */,
@@ -362,7 +337,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -417,7 +392,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -432,8 +407,8 @@
 			baseConfigurationReference = 151CBF811C3C5387659C86A5 /* Pods-CalendarClock.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 9E3BES8CW5;
 				INFOPLIST_FILE = CalendarClock/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
@@ -443,7 +418,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = dev.chopchop.taskyclock;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "Tasky Clock(dev)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -454,8 +429,8 @@
 			baseConfigurationReference = AC414B3C2C1F373E13F07029 /* Pods-CalendarClock.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 9E3BES8CW5;
 				INFOPLIST_FILE = CalendarClock/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
@@ -465,7 +440,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = dev.chopchop.taskyclock;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "Tasky Clock";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
