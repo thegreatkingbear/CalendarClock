@@ -185,9 +185,10 @@ struct CustomEvent: Equatable {
     var title = ""
     var startDate = Date()
     var endDate = Date()
+    var isVisible = true
 
     static func ==(lhs: CustomEvent, rhs: CustomEvent) -> Bool {
-        return lhs.title == rhs.title && lhs.startDate == rhs.startDate && lhs.endDate == rhs.endDate && lhs.progress() == rhs.progress()
+        return lhs.title == rhs.title && lhs.startDate == rhs.startDate && lhs.endDate == rhs.endDate
     }
     
     // this method looks like belonging to view model property

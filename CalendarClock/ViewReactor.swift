@@ -25,6 +25,7 @@ class ViewReactor: Reactor {
         case observeFirstCurrentWeather
         case observeFirstFutureWeather
         case displayLock
+        case deleteEvent(IndexPath)
     }
     
     enum Mutation {
@@ -34,6 +35,7 @@ class ViewReactor: Reactor {
         case receiveFutureWeathers([CustomWeather])
         case displayLocked
         case calendarSettingsLoaded([SectionedEventSettings])
+        case deleteEvent(IndexPath)
     }
     
     struct State {
@@ -43,6 +45,7 @@ class ViewReactor: Reactor {
         var weathers: CustomWeather? // description, icon, temp
         var futures: [SectionedWeathers]?
         var isDisplayLocked: Bool?
+        var editedEvents: [CustomEvent] = [CustomEvent]()
     }
     
     let initialState: State
@@ -109,6 +112,10 @@ class ViewReactor: Reactor {
             
         case .displayLock:
             return Observable.just(Mutation.displayLocked)
+            
+        case let .deleteEvent(indexpath):
+            return Observable.just(Mutation.deleteEvent(indexpath))
+            
         }
     }
     
@@ -121,7 +128,8 @@ class ViewReactor: Reactor {
             return newState
         case let .receiveEvents(events):
             var newState = state
-            let sectionedEvents = SectionedEvents(header: "events", items: events)
+            let filtered = events.filter { !state.editedEvents.contains($0) }
+            let sectionedEvents = SectionedEvents(header: "events", items: filtered)
             newState.events = [sectionedEvents]
             return newState
         case let .receiveCurrentWeathers(weathers):
@@ -143,6 +151,19 @@ class ViewReactor: Reactor {
             // this seems not good. I know. But event store holds the variable which emits changes in calendar settings
             self.eventStore.collectSelectedCalendarIdentifiers(calendars: settings)
             return newState
+        case let .deleteEvent(indexpath):
+            var newState = state
+            
+            var event = state.events![0].items[indexpath.row]
+            event.isVisible = false
+            newState.editedEvents.append(event)
+            
+            let events = state.events![0].items
+            let filtered = events.filter { !newState.editedEvents.contains($0) }
+            let sectionedEvents = SectionedEvents(header: "events", items: filtered)
+            newState.events = [sectionedEvents]
+            return newState
+
         }
     }
     

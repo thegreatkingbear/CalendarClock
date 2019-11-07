@@ -110,6 +110,11 @@ class ViewController: UIViewController, StoryboardView, UIPopoverPresentationCon
     }
     
     func bind(reactor: Reactor) {
+        // for enabling swipe to delete action
+        dataSource.canEditRowAtIndexPath = { dataSource, indexPath in
+          return true
+        }
+        
         // calendar event authorization request (for event service)
         reactor.requestEventAuthorization()
         
@@ -175,6 +180,12 @@ class ViewController: UIViewController, StoryboardView, UIPopoverPresentationCon
             popover.permittedArrowDirections = .down
             self.present(calendarSettingView, animated: true, completion: nil)
         }).disposed(by: self.disposeBag)
+        
+        // for swipe delete action
+        self.tableView!.rx.itemDeleted
+            .map { Reactor.Action.deleteEvent($0) }
+            .bind(to: reactor.action)
+            .disposed(by: self.disposeBag)
         
         // current weather description to view
         reactor.state.asObservable().map { $0.weathers }
