@@ -129,15 +129,15 @@ class CalendarEvent {
     }
     
     func fetchEventsDetail(selected: [String]) -> Observable<[CustomEvent]> {
-        var calendars = CalendarEvent.shared().store.calendars(for: .event)
-        if selected.count > 0 {
-            calendars = []
-            for identifier in selected {
-                if let calendar = store.calendar(withIdentifier: identifier) {
-                    calendars.append(calendar)
-                }
-            }
-        }
+        // call out every calendars
+        let calendars = CalendarEvent.shared().store.calendars(for: .event)
+        
+        // filter calendars out of collected identifiers
+        // Note: if we use calendarWithIdentifier method, we get weird error like
+        // "Error getting shared calendar invitations for entity types 3 from
+        // daemon: Error Domain=EKCADErrorDomain Code=1013"
+        let filtered = calendars.filter { selected.contains($0.calendarIdentifier) }
+
         var retEvents = [CustomEvent]()
 
         // Get the current calendar with local time zone
@@ -153,7 +153,7 @@ class CalendarEvent {
         // Depending on where you live it won't print 00:00:00
         // but it will work with UTC times which can be converted to local time
         
-        for calendar in calendars {
+        for calendar in filtered {
             let predicate = store.predicateForEvents(withStart: dateFrom as Date, end: dateTo as Date, calendars: [calendar])
             let events = store.events(matching: predicate)
             

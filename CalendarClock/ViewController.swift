@@ -60,6 +60,7 @@ class ViewController: UIViewController, StoryboardView, UIPopoverPresentationCon
     @IBOutlet weak var collectionView: UICollectionView?
     @IBOutlet weak var calendarSettingButton: UIButton?
     @IBOutlet weak var displayLockButton: UIButton?
+    @IBOutlet weak var undoButton: UIButton?
     
     // constraints for changing orientations
     @IBOutlet weak var clockXPositionLandscape: NSLayoutConstraint?
@@ -112,7 +113,7 @@ class ViewController: UIViewController, StoryboardView, UIPopoverPresentationCon
     func bind(reactor: Reactor) {
         // for enabling swipe to delete action
         dataSource.canEditRowAtIndexPath = { dataSource, indexPath in
-          return true
+            return true
         }
         
         // calendar event authorization request (for event service)
@@ -242,12 +243,25 @@ class ViewController: UIViewController, StoryboardView, UIPopoverPresentationCon
             .bind(to: reactor.action)
             .disposed(by: self.disposeBag)
         
+        // undo button wired
+        self.undoButton!.rx.tap
+            .map { Reactor.Action.undoDelete}
+            .bind(to: reactor.action)
+            .disposed(by: self.disposeBag)
+        
+        // make toast when undo button tapped
+        self.undoButton!.rx.tap
+            .subscribe(onNext: {
+                let text = "All hidden events are restored now"
+                self.view.makeToast(text)
+            })
+            .disposed(by: self.disposeBag)
+        
         // display always-on or when-charging UI logic
         reactor.state.asObservable().map { $0.isDisplayLocked }
             .distinctUntilChanged()
             .filterNil()
             .subscribe( onNext: {
-                print($0)
                 let imageName = $0 ? "locked" : "unlocked"
                 let text = $0 ? "display is set to always on" : "display keeps on only when charging"
                 self.displayLockButton!.setImage(UIImage(named: imageName), for: .normal)

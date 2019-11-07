@@ -26,6 +26,7 @@ class ViewReactor: Reactor {
         case observeFirstFutureWeather
         case displayLock
         case deleteEvent(IndexPath)
+        case undoDelete
     }
     
     enum Mutation {
@@ -36,6 +37,7 @@ class ViewReactor: Reactor {
         case displayLocked
         case calendarSettingsLoaded([SectionedEventSettings])
         case deleteEvent(IndexPath)
+        case undoDelete
     }
     
     struct State {
@@ -83,7 +85,7 @@ class ViewReactor: Reactor {
             
         case .observeCalendarSetting:
             return self.eventStore.selectedCalendars.asObservable()
-                .flatMap { self.eventStore.fetchEventsDetail(selected: $0)}
+                .flatMap { self.eventStore.fetchEventsDetail(selected: $0) }
                 .map { Mutation.receiveEvents($0) }
             
         case .fetchCurrentWeather: // interval : 1 hour = 3600 seconds
@@ -116,41 +118,56 @@ class ViewReactor: Reactor {
         case let .deleteEvent(indexpath):
             return Observable.just(Mutation.deleteEvent(indexpath))
             
+        case .undoDelete:
+            return Observable.concat([
+                Observable.just(Mutation.undoDelete),
+                
+                self.eventStore.selectedCalendars.asObservable()
+                    .flatMap { self.eventStore.fetchEventsDetail(selected: $0) }
+                    .map { Mutation.receiveEvents($0) }
+            ])
         }
     }
     
     func reduce(state: State, mutation: Mutation) -> State {
         switch mutation {
+            
         case .clicks:
             var newState = state
             newState.currentTime = Clock.currentDateString()
             newState.currentDate = Clock.currentDayString()
             return newState
+            
         case let .receiveEvents(events):
             var newState = state
             let filtered = events.filter { !state.editedEvents.contains($0) }
             let sectionedEvents = SectionedEvents(header: "events", items: filtered)
             newState.events = [sectionedEvents]
             return newState
+            
         case let .receiveCurrentWeathers(weathers):
             var newState = state
             newState.weathers = weathers
             return newState
+            
         case let .receiveFutureWeathers(weathers):
             var newState = state
             let filtered = weathers.filter { $0.day != nil } // to avoid crash when it fetches first time
             newState.futures = self.collectSectionedWeathers(weathers: filtered)
             return newState
+            
         case .displayLocked:
             var newState = state
             let isDisplayLocked = state.isDisplayLocked ?? false
             newState.isDisplayLocked = isDisplayLocked ? false : true
             return newState
+            
         case let .calendarSettingsLoaded(settings):
             let newState = state
             // this seems not good. I know. But event store holds the variable which emits changes in calendar settings
             self.eventStore.collectSelectedCalendarIdentifiers(calendars: settings)
             return newState
+            
         case let .deleteEvent(indexpath):
             var newState = state
             
@@ -164,6 +181,10 @@ class ViewReactor: Reactor {
             newState.events = [sectionedEvents]
             return newState
 
+        case .undoDelete:
+            var newState = state
+            newState.editedEvents = [CustomEvent]()
+            return newState
         }
     }
     
