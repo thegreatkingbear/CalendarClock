@@ -338,14 +338,23 @@ class ViewController: UIViewController, StoryboardView, UIPopoverPresentationCon
     
 }
 
-// event table view cell height
 extension ViewController: UITableViewDelegate {
+    // event table view cell height
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return
             self.view.traitCollection.horizontalSizeClass == .regular &&
             self.view.traitCollection.verticalSizeClass == .regular
                 ? 160 : 80
     }
+
+    // for delete button style customization
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+         let deleteButton = UITableViewRowAction(style: .default, title: "HIDE") { (action, indexPath) in
+             self.tableView!.dataSource?.tableView!(self.tableView!, commit: .delete, forRowAt: indexPath)
+             return
+         }
+         return [deleteButton]
+     }
 }
 
 extension ObservableType where E: Sequence, E.Iterator.Element: Equatable {
