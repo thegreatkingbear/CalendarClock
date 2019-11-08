@@ -170,18 +170,6 @@ class ViewController: UIViewController, StoryboardView, UIPopoverPresentationCon
         let calendarSettingView = UIStoryboard(name: "Main", bundle: nil)
             .instantiateViewController(withIdentifier: "CalendarSetting") as! EventSettingViewController
         
-        // pop up calendar setting table view over event table view
-        self.tableView!.rx.itemSelected.subscribe(onNext: { indexPath in
-            calendarSettingView.reactor = EventSettingViewReactor()
-            calendarSettingView.preferredContentSize = CGSize(width: 350, height: 300)
-            calendarSettingView.modalPresentationStyle = .popover
-            let popover = AlwaysPresentAsPopover.configurePresentation(forController: calendarSettingView)
-            popover.sourceView = self.tableView!
-            popover.sourceRect = self.tableView!.bounds
-            popover.permittedArrowDirections = .down
-            self.present(calendarSettingView, animated: true, completion: nil)
-        }).disposed(by: self.disposeBag)
-        
         // for swipe delete action
         self.tableView!.rx.itemDeleted
             .map { Reactor.Action.deleteEvent($0) }
