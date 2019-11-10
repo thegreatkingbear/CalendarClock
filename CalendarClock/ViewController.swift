@@ -108,6 +108,7 @@ class ViewController: UIViewController, StoryboardView, UIPopoverPresentationCon
         
         // to detect orientations at start-up
         self.applyOrientations()
+        
     }
     
     func bind(reactor: Reactor) {
@@ -162,7 +163,7 @@ class ViewController: UIViewController, StoryboardView, UIPopoverPresentationCon
         
         reactor.state.asObservable().map { $0.events }
             .filterNil()
-            //.distinctUntilChanged { $0 == $1 }
+            .distinctUntilChanged { $0 == $1 } // 'hide' button keeps sprining back unless this line added
             .bind(to: self.tableView!.rx.items(dataSource: self.dataSource))
             .disposed(by: self.disposeBag)
         
@@ -171,7 +172,7 @@ class ViewController: UIViewController, StoryboardView, UIPopoverPresentationCon
             .instantiateViewController(withIdentifier: "CalendarSetting") as! EventSettingViewController
         
         // for swipe delete action
-        self.tableView!.rx.itemDeleted
+        self.tableView!.rx.itemDeleted.asObservable()
             .map { Reactor.Action.deleteEvent($0) }
             .bind(to: reactor.action)
             .disposed(by: self.disposeBag)
@@ -349,12 +350,17 @@ extension ViewController: UITableViewDelegate {
 
     // for delete button style customization
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-         let deleteButton = UITableViewRowAction(style: .default, title: "HIDE") { (action, indexPath) in
-             self.tableView!.dataSource?.tableView!(self.tableView!, commit: .delete, forRowAt: indexPath)
-             return
-         }
-         return [deleteButton]
-     }
+        let deleteButton = UITableViewRowAction(style: .default, title: "HIDE") { (action, indexPath) in
+            self.tableView!.dataSource?.tableView!(self.tableView!, commit: .delete, forRowAt: indexPath)
+        }
+        deleteButton.backgroundColor = .gray
+        return [deleteButton]
+    }
+    
+    func tableView(_ tableView: UITableView, willBeginEditingRowAt indexPath: IndexPath) {
+        tableView.setEditing(true, animated: true)
+    }
+    
 }
 
 extension ObservableType where E: Sequence, E.Iterator.Element: Equatable {

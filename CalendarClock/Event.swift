@@ -161,9 +161,10 @@ class CalendarEvent {
                 retEvents
                     .append(
                         CustomEvent(
+                            id: event.eventIdentifier,
                             title: event.title,
                             startDate: event.startDate,
-                            endDate: event.endDate))
+                            endDate: event.endDate)!)
             }
         }
         
@@ -181,14 +182,28 @@ class CalendarEvent {
 
 }
 
-struct CustomEvent: Equatable {
+struct CustomEvent: Equatable, IdentifiableType {
+    typealias Identity = String
+    
     var title = ""
     var startDate = Date()
     var endDate = Date()
     var isVisible = true
+    let id: String
 
+    init?(id: String, title: String, startDate: Date, endDate: Date) {
+        self.id = id
+        self.title = title
+        self.startDate = startDate
+        self.endDate = endDate
+    }
+    
     static func ==(lhs: CustomEvent, rhs: CustomEvent) -> Bool {
         return lhs.title == rhs.title && lhs.startDate == rhs.startDate && lhs.endDate == rhs.endDate
+    }
+    
+    var identity: String {
+        return id
     }
     
     // this method looks like belonging to view model property
@@ -236,6 +251,14 @@ extension SectionedEvents: SectionModelType {
     init(original: SectionedEvents, items: [Item]) {
         self = original
         self.items = items
+    }
+}
+
+extension SectionedEvents: AnimatableSectionModelType {
+    typealias Identity = String
+    
+    var identity: String {
+        return header
     }
 }
 
