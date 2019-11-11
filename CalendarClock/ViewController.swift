@@ -139,6 +139,7 @@ class ViewController: UIViewController, StoryboardView, UIPopoverPresentationCon
         // observe events
         reactor.action.onNext(.observeEvents)
         reactor.action.onNext(.observeCalendarSetting)
+        reactor.action.onNext(.observeEventsAuthorization)
         
         // fetch weathers
         reactor.action.onNext(.fetchCurrentWeather)

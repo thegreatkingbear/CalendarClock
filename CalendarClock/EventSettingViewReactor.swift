@@ -38,7 +38,7 @@ class EventSettingViewReactor: Reactor {
     func mutate(action: Action) -> Observable<Mutation> {
         switch action {
         case .fetchCalendars:
-            return self.mergeCalendars().asObservable()
+            return self.eventStore.mergeCalendars().asObservable()
                 .map { Mutation.receiveCalendars($0) }
         case let .saveChanges(index):
             return Observable.just(Mutation.updateCalendar(index))
@@ -63,42 +63,5 @@ class EventSettingViewReactor: Reactor {
         }
     }
     
-    private func mergeCalendars() -> Observable<[SectionedEventSettings]> {
-        return Observable.combineLatest(
-            self.eventStore.fetchCalendars(),
-            self.eventStore.loadFromUserDefaults(),
-            resultSelector: { fetched, loadedCalendars -> [SectionedEventSettings] in
-                // reorganize fetched calendars into sectioned table view rows
-                let sortedCalendars = fetched.sorted(by: { $0.owner < $1.owner })
-                var groupedCalendars = sortedCalendars.reduce([SectionedEventSettings]()) {
-                    guard var last = $0.last else { return [SectionedEventSettings(header: $1.owner, items: [$1])] }
-                    var collection = $0
-                    if last.header == $1.owner {
-                        last.items += [$1]
-                        collection[collection.count - 1] = last
-                    } else {
-                        collection += [SectionedEventSettings(header: $1.owner, items: [$1])]
-                    }
-                    return collection
-                }
-                
-                // find same calendar item and populate them with previously saved value
-                for i in 0..<groupedCalendars.count {
-                    for j in 0..<loadedCalendars.count {
-                        if groupedCalendars[i].header == loadedCalendars[j].header {
-                            for k in 0..<loadedCalendars[j].items.count {
-                                for l in 0..<groupedCalendars[i].items.count {
-                                    if loadedCalendars[j].items[k].identifier == groupedCalendars[i].items[l].identifier {
-                                        groupedCalendars[i].items[l].isSelected = loadedCalendars[j].items[k].isSelected
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                
-                return groupedCalendars
-        })
-    }
     
 }

@@ -116,6 +116,10 @@ class CalendarEvent {
         })
     }
     
+    // I wanted to merge this method into mergeCalendars which is just below
+    // But when I exchanged the caller in EventSettingViewReactor,
+    // it fails to call the mergeCalendars method
+    // Further investigation needed, but I think the reason is beneath the observable return value
     func collectSelectedCalendarIdentifiers(calendars: [SectionedEventSettings]) {
         var identifiers = [String]()
         for sectionedEventSetting in calendars {
@@ -128,16 +132,63 @@ class CalendarEvent {
         self.selectedCalendars.onNext(identifiers)
     }
     
-    func fetchEventsDetail(selected: [String]) -> Observable<[CustomEvent]> {
+    func mergeCalendars() -> Observable<[SectionedEventSettings]> {
+        return Observable.combineLatest(
+            fetchCalendars(),
+            loadFromUserDefaults(),
+            resultSelector: { fetched, loadedCalendars -> [SectionedEventSettings] in
+                // reorganize fetched calendars into sectioned table view rows
+                let sortedCalendars = fetched.sorted(by: { $0.owner < $1.owner })
+                var groupedCalendars = sortedCalendars.reduce([SectionedEventSettings]()) {
+                    guard var last = $0.last else { return [SectionedEventSettings(header: $1.owner, items: [$1])] }
+                    var collection = $0
+                    if last.header == $1.owner {
+                        last.items += [$1]
+                        collection[collection.count - 1] = last
+                    } else {
+                        collection += [SectionedEventSettings(header: $1.owner, items: [$1])]
+                    }
+                    return collection
+                }
+                
+                // find same calendar item and populate them with previously saved value
+                for i in 0..<groupedCalendars.count {
+                    for j in 0..<loadedCalendars.count {
+                        if groupedCalendars[i].header == loadedCalendars[j].header {
+                            for k in 0..<loadedCalendars[j].items.count {
+                                for l in 0..<groupedCalendars[i].items.count {
+                                    if loadedCalendars[j].items[k].identifier == groupedCalendars[i].items[l].identifier {
+                                        groupedCalendars[i].items[l].isSelected = loadedCalendars[j].items[k].isSelected
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                // collect selected calendars and push them
+                var identifiers = [String]()
+                for sectionedEventSetting in groupedCalendars {
+                    for item in sectionedEventSetting.items {
+                        if item.isSelected {
+                            identifiers.append(item.identifier)
+                        }
+                    }
+                }
+                self.selectedCalendars.onNext(identifiers)
+                return groupedCalendars
+        })
+    }
+    
+    func fetchEventsDetail() -> Observable<[CustomEvent]> {
         // call out every calendars
         let calendars = CalendarEvent.shared().store.calendars(for: .event)
-        
+        let selected = try! selectedCalendars.value()
         // filter calendars out of collected identifiers
         // Note: if we use calendarWithIdentifier method, we get weird error like
         // "Error getting shared calendar invitations for entity types 3 from
         // daemon: Error Domain=EKCADErrorDomain Code=1013"
         let filtered = calendars.filter { selected.contains($0.calendarIdentifier) }
-
         var retEvents = [CustomEvent]()
 
         // Get the current calendar with local time zone
@@ -170,7 +221,6 @@ class CalendarEvent {
         
         // sort events in start date ascending order
         retEvents = retEvents.sorted(by: { $0.startDate.compare($1.startDate) == .orderedAscending })
-        
         return Observable.create({ (observer) -> Disposable in
             
             observer.onNext(retEvents)

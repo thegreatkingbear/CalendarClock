@@ -18,6 +18,7 @@ class ViewReactor: Reactor {
         case startClicking
         case fetchEvents
         case observeEvents
+        case observeEventsAuthorization
         case loadCalendarSetting
         case observeCalendarSetting
         case fetchCurrentWeather
@@ -67,25 +68,31 @@ class ViewReactor: Reactor {
         case .fetchEvents: // interval : 1 minute = 60 seconds (considering clock changes every 1 minute)
             return Observable<Int>.interval(60, scheduler: MainScheduler.instance)
                 .startWith(11) // to start immediately
-                .flatMap { _ in self.eventStore.authorized.asObservable() }
-                .filter { $0 == true } // only when authorized
+                .filter { _ in try! self.eventStore.authorized.value() == true } // only when authorized
+                .flatMap { _ in self.eventStore.mergeCalendars() }
                 .flatMap { _ in self.eventStore.selectedCalendars.asObservable() }
-                .flatMap { self.eventStore.fetchEventsDetail(selected: $0) }
+                .flatMap { _ in self.eventStore.fetchEventsDetail() }
                 .map { Mutation.receiveEvents($0) }
             
         case .observeEvents:
             return NotificationCenter.default.rx.notification(.EKEventStoreChanged)
                 .flatMap { _ in self.eventStore.selectedCalendars.asObservable() }
-                .flatMap { self.eventStore.fetchEventsDetail(selected: $0) }
+                .flatMap { _ in self.eventStore.fetchEventsDetail() }
                 .map { Mutation.receiveEvents($0) }
             
+        case .observeEventsAuthorization:
+            return self.eventStore.authorized.asObservable()
+                .flatMap { _ in self.eventStore.mergeCalendars() }
+                .flatMap { _ in self.eventStore.fetchEventsDetail() }
+                .map { Mutation.receiveEvents($0) }
+
         case .loadCalendarSetting:
-            return self.eventStore.loadFromUserDefaults()
+            return self.eventStore.mergeCalendars()
                 .map { Mutation.calendarSettingsLoaded($0) }
             
         case .observeCalendarSetting:
             return self.eventStore.selectedCalendars.asObservable()
-                .flatMap { self.eventStore.fetchEventsDetail(selected: $0) }
+                .flatMap { _ in self.eventStore.fetchEventsDetail() }
                 .map { Mutation.receiveEvents($0) }
             
         case .fetchCurrentWeather: // interval : 1 hour = 3600 seconds
@@ -123,7 +130,7 @@ class ViewReactor: Reactor {
                 Observable.just(Mutation.undoDelete),
                 
                 self.eventStore.selectedCalendars.asObservable()
-                    .flatMap { self.eventStore.fetchEventsDetail(selected: $0) }
+                    .flatMap { _ in self.eventStore.fetchEventsDetail() }
                     .map { Mutation.receiveEvents($0) }
             ])
         }
