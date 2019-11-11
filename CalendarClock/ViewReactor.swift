@@ -91,14 +91,14 @@ class ViewReactor: Reactor {
         case .fetchCurrentWeather: // interval : 1 hour = 3600 seconds
             return Observable<Int>.interval(3600, scheduler: MainScheduler.instance)
                 .startWith(11) // to start immediately
-                .filter { _ in self.weather.coord.0 != 0 }
+                .filter { _ in !(self.weather.coord.0 == 0 && self.weather.coord.1 == 0)}
                 .flatMap { _ in self.weather.fetchCurrentWeatherData() }
                 .map { Mutation.receiveCurrentWeathers($0) }
             
         case .fetchFutureWeather: // interval : 2 hour = 7200 seconds
             return Observable<Int>.interval(7200, scheduler: MainScheduler.instance)
                 .startWith(11) // to start immediately
-                .filter { _ in self.weather.coord.0 != 0 }
+                .filter { _ in !(self.weather.coord.0 == 0 && self.weather.coord.1 == 0) }
                 .flatMap { _ in self.weather.fetchFutureWeatherData() }
                 .map { Mutation.receiveFutureWeathers($0) }
             
