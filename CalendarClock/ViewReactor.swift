@@ -16,6 +16,7 @@ class ViewReactor: Reactor {
 
     enum Action {
         case startClicking
+        case updateEventsOnClock
         case fetchEvents
         case observeEvents
         case observeEventsAuthorization
@@ -32,6 +33,7 @@ class ViewReactor: Reactor {
     
     enum Mutation {
         case clicks
+        case updateEventsOnClock
         case receiveEvents([CustomEvent])
         case receiveCurrentWeathers(CustomWeather)
         case receiveFutureWeathers([CustomWeather])
@@ -64,6 +66,10 @@ class ViewReactor: Reactor {
         case .startClicking:
             return Observable<Int>.interval(1, scheduler: MainScheduler.instance)
                 .map { _ in Mutation.clicks }
+            
+        case .updateEventsOnClock:
+            return Observable<Int>.interval(1, scheduler: MainScheduler.instance)
+                .map { _ in Mutation.updateEventsOnClock }
             
         case .fetchEvents: // interval : 1 minute = 60 seconds (considering clock changes every 1 minute)
             return Observable<Int>.interval(60, scheduler: MainScheduler.instance)
@@ -145,6 +151,24 @@ class ViewReactor: Reactor {
             newState.currentDate = Clock.currentDayString()
             return newState
             
+        case .updateEventsOnClock:
+            var newState = state
+            let events = state.events!
+            var newEvents = [SectionedEvents]()
+            for event in events {
+                var newEvent = event
+                var newItems = [CustomEvent]()
+                for item in event.items {
+                    var newItem = item
+                    newItem.timeDiff()
+                    newItems.append(newItem)
+                }
+                newEvent.items = newItems
+                newEvents.append(newEvent)
+            }
+            newState.events = newEvents
+            return newState
+            
         case let .receiveEvents(events):
             var newState = state
             let filtered = events.filter { !state.editedEvents.contains($0) }
@@ -178,7 +202,13 @@ class ViewReactor: Reactor {
         case let .deleteEvent(indexpath):
             var newState = state
             
-            var event = state.events![0].items[indexpath.row]
+            // because of time difference between tableview cell disappearance,
+            // which is late, and real indexpath of sectioned events,
+            // fast fingers often cause index out of range errors
+            // below safe guard this problem
+            guard var event = state.events![0].items[safe: indexpath.row] else {
+                return newState
+            }
             event.isVisible = false
             newState.editedEvents.append(event)
             
@@ -218,5 +248,11 @@ class ViewReactor: Reactor {
             return collection
         }
         return grouped
+    }
+}
+
+extension Collection where Indices.Iterator.Element == Index {
+    subscript (safe index: Index) -> Iterator.Element? {
+        return indices.contains(index) ? self[index] : nil
     }
 }

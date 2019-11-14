@@ -240,6 +240,7 @@ struct CustomEvent: Equatable, IdentifiableType {
     var endDate = Date()
     var isVisible = true
     let id: String
+    var timeStamp: Int = 0
 
     init?(id: String, title: String, startDate: Date, endDate: Date) {
         self.id = id
@@ -274,6 +275,14 @@ struct CustomEvent: Equatable, IdentifiableType {
                 String(format: "%02d", endMinute)
         }
         return expression
+    }
+    
+    // to update event table every 1 second
+    mutating func timeDiff() {
+        var calendar = Calendar.current
+        calendar.timeZone = NSTimeZone.local
+        let remaining = Int(calendar.dateComponents([.second], from: Date(), to: endDate).second!)
+        timeStamp = remaining
     }
     
     func progress() -> Double {

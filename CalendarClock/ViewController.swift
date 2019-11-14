@@ -114,6 +114,7 @@ class ViewController: UIViewController, StoryboardView, UIPopoverPresentationCon
     func bind(reactor: Reactor) {
         // for enabling swipe to delete action
         dataSource.canEditRowAtIndexPath = { dataSource, indexPath in
+            if self.tableView!.isEditing { return false }
             return true
         }
         
@@ -129,6 +130,7 @@ class ViewController: UIViewController, StoryboardView, UIPopoverPresentationCon
         
         // start clock
         reactor.action.onNext(.startClicking)
+        reactor.action.onNext(.updateEventsOnClock)
         
         // load calendar settings
         reactor.action.onNext(.loadCalendarSetting)
@@ -164,7 +166,8 @@ class ViewController: UIViewController, StoryboardView, UIPopoverPresentationCon
         
         reactor.state.asObservable().map { $0.events }
             .filterNil()
-            .distinctUntilChanged { $0 == $1 } // 'hide' button keeps sprining back unless this line added
+            .filter { _ in !self.tableView!.isEditing }
+            //.distinctUntilChanged { $0 == $1 } // 'hide' button keeps sprining back unless this line added
             .bind(to: self.tableView!.rx.items(dataSource: self.dataSource))
             .disposed(by: self.disposeBag)
         
@@ -173,10 +176,22 @@ class ViewController: UIViewController, StoryboardView, UIPopoverPresentationCon
             .instantiateViewController(withIdentifier: "CalendarSetting") as! EventSettingViewController
         
         // for swipe delete action
-        self.tableView!.rx.itemDeleted.asObservable()
+        self.tableView!.rx.itemDeleted
             .map { Reactor.Action.deleteEvent($0) }
             .bind(to: reactor.action)
             .disposed(by: self.disposeBag)
+
+        // this is for the time difference between deleting and being hidden
+        self.tableView!.rx.itemDeleted
+            .subscribe({ item in
+                self.view.makeToastActivity(.center)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: {
+                    self.view.hideToastActivity()
+                    // on ios9 device, isEditing property does not set back to false
+                    self.tableView?.setEditing(false, animated: true)
+                })
+            })
+            .disposed(by:self.disposeBag)
         
         // current weather description to view
         reactor.state.asObservable().map { $0.weathers }
@@ -351,8 +366,10 @@ extension ViewController: UITableViewDelegate {
 
     // for delete button style customization
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        if isEditing { return .none }
         let deleteButton = UITableViewRowAction(style: .default, title: "HIDE") { (action, indexPath) in
             self.tableView!.dataSource?.tableView!(self.tableView!, commit: .delete, forRowAt: indexPath)
+            
         }
         deleteButton.backgroundColor = .gray
         return [deleteButton]
