@@ -9,7 +9,7 @@ turn your iphone and ipad into decent table clock  rxswift + reactorkit
 
 ## Screenshots
 
-<img src="screenshot1.png" alt="screenshot1" style="zoom:25%;" />
+<img src="screenshot1.png" alt="screenshot1" width="300" height="533" />
 
 ## Stacks
 
