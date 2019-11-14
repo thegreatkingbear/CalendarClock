@@ -1,6 +1,12 @@
 # Tasky Clock
 turn your iphone and ipad into decent table clock  rxswift + reactorkit
 
+## Features
+- Clock
+- Weather (current and forecast)
+- Events from calendars
+- Time timer with pie graph
+
 ## Stacks
 - RxSwift
 - RxDataSources
