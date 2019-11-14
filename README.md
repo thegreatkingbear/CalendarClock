@@ -1,5 +1,5 @@
 # Tasky Clock
-turn your iphone and ipad into decent table clock  rxswift + reactorkit
+turn your iphone and ipad into decent table clock with rxswift + reactorkit
 
 ## Features
 - Clock
