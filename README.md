@@ -7,7 +7,12 @@ turn your iphone and ipad into decent table clock  rxswift + reactorkit
 - Events from calendars
 - Time timer with pie graph
 
+## Screenshots
+
+<img src="screenshot1.png" alt="screenshot1" style="zoom:25%;" />
+
 ## Stacks
+
 - RxSwift
 - RxDataSources
 - ReactorKit
