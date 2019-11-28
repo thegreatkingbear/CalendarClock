@@ -152,19 +152,7 @@ class CalendarEvent {
                 }
                 
                 // find same calendar item and populate them with previously saved value
-                for i in 0..<groupedCalendars.count {
-                    for j in 0..<loadedCalendars.count {
-                        if groupedCalendars[i].header == loadedCalendars[j].header {
-                            for k in 0..<loadedCalendars[j].items.count {
-                                for l in 0..<groupedCalendars[i].items.count {
-                                    if loadedCalendars[j].items[k].identifier == groupedCalendars[i].items[l].identifier {
-                                        groupedCalendars[i].items[l].isSelected = loadedCalendars[j].items[k].isSelected
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+                groupedCalendars = loadedCalendars + groupedCalendars.filter { !loadedCalendars.contains($0) }
                 
                 // collect selected calendars and push them
                 var identifiers = [String]()
@@ -328,12 +316,12 @@ struct CalendarSetting: Equatable, Codable {
     var isSelected = true
     
     static func ==(lhs: CalendarSetting, rhs: CalendarSetting) -> Bool {
-        return lhs.identifier == rhs.identifier && lhs.isSelected == rhs.isSelected
+        return lhs.identifier == rhs.identifier // isSelected is deleted to make possible of '+' operand in 'Merge' method
     }
 }
 
 struct SectionedEventSettings: Equatable, Codable {
-    var header: String
+    var header: String // owner
     var items: [Item]
     
     static func ==(lhs: SectionedEventSettings, rhs: SectionedEventSettings) -> Bool {

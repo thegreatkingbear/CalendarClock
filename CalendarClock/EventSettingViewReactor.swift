@@ -55,7 +55,7 @@ class EventSettingViewReactor: Reactor {
             return newState
         case let .updateCalendar(index):
             var newState = state
-            if var calendars = newState.calendars {
+            if var calendars = state.calendars {
                 calendars[index.0].items[index.1].isSelected.toggle()
                 newState.calendars = calendars
             }

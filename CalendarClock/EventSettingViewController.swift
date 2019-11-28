@@ -51,7 +51,8 @@ class EventSettingViewController: UIViewController, StoryboardView {
         
         reactor.state.asObservable().map { $0.calendars }
             .filterNil()
-            .distinctUntilChanged { $0 == $1 }
+            // below line causes problem because 'isSelected' property is not included in '==' operand
+            //.distinctUntilChanged { $0 == $1 }
             .bind(to: self.tableView!.rx.items(dataSource: self.dataSource))
             .disposed(by: self.disposeBag)
         
