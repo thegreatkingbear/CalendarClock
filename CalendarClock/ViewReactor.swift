@@ -73,10 +73,8 @@ class ViewReactor: Reactor {
             
         case .fetchEvents: // interval : 1 minute = 60 seconds (considering clock changes every 1 minute)
             return Observable<Int>.interval(60, scheduler: MainScheduler.instance)
-                .startWith(11) // to start immediately
                 .filter { _ in try! self.eventStore.authorized.value() == true } // only when authorized
                 .flatMap { _ in self.eventStore.mergeCalendars() }
-                .flatMap { _ in self.eventStore.selectedCalendars.asObservable() }
                 .flatMap { _ in self.eventStore.fetchEventsDetail() }
                 .map { Mutation.receiveEvents($0) }
             
