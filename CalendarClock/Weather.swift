@@ -115,7 +115,7 @@ class Weather: CLLocationManager, CLLocationManagerDelegate {
                             var item = CustomWeather()
                             item.description = dict["weather"][0]["description"].description
                             let iconName = dict["weather"][0]["icon"].description
-                            item.icon = UIImage(named: iconName)!.with(color: UIColor.gray)
+                            item.icon = (UIImage(named: iconName) ?? UIImage(named: "01d")!).with(color: UIColor.gray)
                             item.temp = String(round(Double(dict["main"]["temp"].description)!)).split(separator: ".")[0] + "°"
                             item.day = self.convertUnixTimeToDay(dt: Double(dict["dt"].description)!)
                             item.weekday = self.convertUnixTimeToWeekday(dt: Double(dict["dt"].description)!)
