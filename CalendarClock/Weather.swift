@@ -62,7 +62,7 @@ class Weather: CLLocationManager, CLLocationManagerDelegate {
         self.requestWhenInUseAuthorization()
     }
     
-    func fetchCurrentWeatherData() -> Observable<CustomWeather> {
+    func fetchCurrentWeatherData() -> Observable<Condition> {
         print("----------------fetching current weather--------------")
 
         let parameter: Parameters = [
@@ -75,26 +75,23 @@ class Weather: CLLocationManager, CLLocationManagerDelegate {
         return Observable.create({ (observer) -> Disposable in
             Alamofire.request("\(SECRET.URL_STRING)weather", method: .get, parameters: parameter)
                 .validate(statusCode: 200..<300)
-                .responseJSON { response in
-                    switch response.result {
-                    case .success(let json):
-                        let dict = JSON(json)
-                        var current = CustomWeather()
-                        current.description = dict["weather"][0]["description"].description
-                        let iconName = dict["weather"][0]["icon"].description
-                        current.icon = UIImage(named: iconName)!.with(color: UIColor.lightGray)
-                        current.temp = String(round(Double(dict["main"]["temp"].description)!)).split(separator: ".")[0] + "°"
-                        observer.onNext(current)
-                        observer.onCompleted()
-                    case .failure(let error):
-                        print(error.localizedDescription)
+                .responseData { response in
+                    let current: Result<Condition> = JSONDecoder().decodeResponse(from: response)
+                    switch current {
+                        case .success(let condition):
+//                            print(condition)
+                            observer.onNext(condition)
+                            observer.onCompleted()
+                        case .failure(let error):
+                            print(error)
+                            observer.onCompleted()
                     }
-            }
+                }
             return Disposables.create()
         })
     }
     
-    func fetchFutureWeatherData() -> Observable<[CustomWeather]> {
+    func fetchFutureWeatherData() -> Observable<[Condition]> {
         print("----------------fetching future weather--------------")
         let parameter: Parameters = [
             "appid": SECRET.WEATHER_API_KEY,
@@ -106,72 +103,22 @@ class Weather: CLLocationManager, CLLocationManagerDelegate {
         return Observable.create({ (observer) -> Disposable in
             Alamofire.request("\(SECRET.URL_STRING)forecast", method: .get, parameters: parameter)
                 .validate(statusCode: 200..<300)
-                .responseJSON { response in
-                    var ret = [CustomWeather()]
-                    switch response.result {
-                    case .success(let json):
-                        let dicts = JSON(json)
-                        for dict in dicts["list"].arrayValue {
-                            var item = CustomWeather()
-                            item.description = dict["weather"][0]["description"].description
-                            let iconName = dict["weather"][0]["icon"].description
-                            item.icon = (UIImage(named: iconName) ?? UIImage(named: "01d")!).with(color: UIColor.gray)
-                            item.temp = String(round(Double(dict["main"]["temp"].description)!)).split(separator: ".")[0] + "°"
-                            item.day = self.convertUnixTimeToDay(dt: Double(dict["dt"].description)!)
-                            item.weekday = self.convertUnixTimeToWeekday(dt: Double(dict["dt"].description)!)
-                            item.hour = self.convertUnixTimeToHour(dt: Double(dict["dt"].description)!)
-                            item.unixTime = Int(dict["dt"].description)!
-                            ret.append(item)
-                        }
-                        observer.onNext(ret)
-                        observer.onCompleted()
-                    case .failure(let error):
-                        print(error.localizedDescription)
+                .responseData { response in
+                    let futures: Result<FutureCondition> = JSONDecoder().decodeResponse(from: response)
+                    switch futures {
+                        case .success(let futures):
+//                            print(futures)
+                            observer.onNext(futures.list)
+                            observer.onCompleted()
+                        case .failure(let error):
+                            print(error)
+                            observer.onCompleted()
                     }
-            }
+                }
             return Disposables.create()
         })
     }
     
-    // convert dt to day string
-    private func convertUnixTimeToDay(dt: Double) -> Int {
-        let date = Date(timeIntervalSince1970: dt)
-        let day = Calendar.current.component(.day, from: date)
-        return day
-    }
-    
-    private func convertUnixTimeToWeekday(dt: Double) -> String {
-        let date = Date(timeIntervalSince1970: dt)
-        
-        // I just used this here instead of Apple's weekday property.
-        // It works well with user's locale
-        let formatter = DateFormatter()
-        formatter.dateFormat = "E"
-        return formatter.string(from: date)
-        
-    }
-
-    // convert dt to hour string
-    private func convertUnixTimeToHour(dt: Double) -> String {
-        let date = Date(timeIntervalSince1970: dt)
-        let hour = Calendar.current.component(.hour, from: date)
-        return String(format:"%02d", hour)
-    }
-
-}
-
-struct CustomWeather: Equatable {
-    var description: String?
-    var icon: UIImage?
-    var temp: String?
-    var day: Int?
-    var weekday: String?
-    var hour: String?
-    var unixTime: Int?
-
-    static func ==(lhs: CustomWeather, rhs: CustomWeather) -> Bool {
-        return lhs.description == rhs.description && lhs.temp == rhs.temp && lhs.day == rhs.day && lhs.hour == rhs.hour && lhs.unixTime == rhs.unixTime
-    }
 }
 
 struct SectionedWeathers: Equatable {
@@ -184,10 +131,40 @@ struct SectionedWeathers: Equatable {
 }
 
 extension SectionedWeathers: SectionModelType {
-    typealias Item = CustomWeather
+    typealias Item = Condition
     
     init(original: SectionedWeathers, items: [Item]) {
         self = original
         self.items = items
     }
+}
+
+
+extension JSONDecoder {
+    func decodeResponse<T: Decodable>(from response: DataResponse<Data>) -> Result<T> {
+        guard response.error == nil else {
+            print(response.error!)
+            return .failure(response.error!)
+        }
+
+        guard let responseData = response.data else {
+            print("didn't get any data from API")
+            return .failure(BackendError.parsing(reason: "Did not get data in response"))
+        }
+
+        do {
+            let item = try decode(T.self, from: responseData)
+            return .success(item)
+        } catch {
+            print("error trying to decode response")
+            print(error)
+            return .failure(error)
+        }
+    }
+}
+
+enum BackendError: Error {
+    case urlError(reason: String)
+    case objectSerialization(reason: String)
+    case parsing(reason: String)
 }

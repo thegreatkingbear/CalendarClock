@@ -35,8 +35,8 @@ class ViewReactor: Reactor {
         case clicks
         case updateEventsOnClock
         case receiveEvents([CustomEvent])
-        case receiveCurrentWeathers(CustomWeather)
-        case receiveFutureWeathers([CustomWeather])
+        case receiveCurrentWeathers(Condition)
+        case receiveFutureWeathers([Condition])
         case displayLocked
         case calendarSettingsLoaded([SectionedEventSettings])
         case deleteEvent(IndexPath)
@@ -47,7 +47,7 @@ class ViewReactor: Reactor {
         var currentTime: String?
         var currentDate: String?
         var events: [SectionedEvents]?
-        var weathers: CustomWeather? // description, icon, temp
+        var weathers: Condition? // description, icon, temp
         var futures: [SectionedWeathers]?
         var isDisplayLocked: Bool?
         var editedEvents: [CustomEvent] = [CustomEvent]()
@@ -181,7 +181,7 @@ class ViewReactor: Reactor {
             
         case let .receiveFutureWeathers(weathers):
             var newState = state
-            let filtered = weathers.filter { $0.day != nil } // to avoid crash when it fetches first time
+            let filtered = weathers.filter { $0.dt != 0 } // to avoid crash when it fetches first time
             newState.futures = self.collectSectionedWeathers(weathers: filtered)
             return newState
             
@@ -231,17 +231,17 @@ class ViewReactor: Reactor {
         self.eventStore.verifyAuthorityToEvents()
     }
     
-    func collectSectionedWeathers(weathers: [CustomWeather]) -> [SectionedWeathers] {
+    func collectSectionedWeathers(weathers: [Condition]) -> [SectionedWeathers] {
         // reorganize fetched weathers into sectioned table view rows
-        let sorted = weathers.sorted { $0.unixTime! < $1.unixTime! }
+        let sorted = weathers.sorted { $0.dt < $1.dt }
         let grouped = sorted.reduce([SectionedWeathers]()) {
-            guard var last = $0.last else { return [SectionedWeathers(header: (String($1.day!), $1.weekday!), items: [$1])] }
+            guard var last = $0.last else { return [SectionedWeathers(header: (String($1.day()), $1.weekday()), items: [$1])] }
             var collection = $0
-            if last.header.0 == String($1.day!) {
+            if last.header.0 == String($1.day()) {
                 last.items += [$1]
                 collection[collection.count - 1] = last
             } else {
-                collection += [SectionedWeathers(header: (String($1.day!), $1.weekday!), items: [$1])]
+                collection += [SectionedWeathers(header: (String($1.day()), $1.weekday()), items: [$1])]
             }
             return collection
         }

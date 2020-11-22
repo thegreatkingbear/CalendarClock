@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		1FBBA74B1769F4C852975007 /* Pods_CalendarClock.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6D9247FE49AB737B887DFC6 /* Pods_CalendarClock.framework */; };
 		2A2A3C11236FEC32008FF51D /* SECRET.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A2A3C10236FEC32008FF51D /* SECRET.swift */; };
+		2A471CF5256A4BAF004A0AA1 /* CustomWeather.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A471CF4256A4BAF004A0AA1 /* CustomWeather.swift */; };
 		E703AC602242215E00E7FA4F /* PieProgressLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E703AC5C2242215E00E7FA4F /* PieProgressLayer.swift */; };
 		E703AC612242215E00E7FA4F /* NSBezierPath+CGPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = E703AC5D2242215E00E7FA4F /* NSBezierPath+CGPath.swift */; };
 		E703AC622242215E00E7FA4F /* PieProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E703AC5E2242215E00E7FA4F /* PieProgressView.swift */; };
@@ -30,6 +31,7 @@
 /* Begin PBXFileReference section */
 		151CBF811C3C5387659C86A5 /* Pods-CalendarClock.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CalendarClock.debug.xcconfig"; path = "Target Support Files/Pods-CalendarClock/Pods-CalendarClock.debug.xcconfig"; sourceTree = "<group>"; };
 		2A2A3C10236FEC32008FF51D /* SECRET.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SECRET.swift; sourceTree = "<group>"; };
+		2A471CF4256A4BAF004A0AA1 /* CustomWeather.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomWeather.swift; sourceTree = "<group>"; };
 		A6D9247FE49AB737B887DFC6 /* Pods_CalendarClock.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CalendarClock.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AC414B3C2C1F373E13F07029 /* Pods-CalendarClock.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CalendarClock.release.xcconfig"; path = "Target Support Files/Pods-CalendarClock/Pods-CalendarClock.release.xcconfig"; sourceTree = "<group>"; };
 		E703AC5C2242215E00E7FA4F /* PieProgressLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PieProgressLayer.swift; sourceTree = "<group>"; };
@@ -128,6 +130,7 @@
 				E729285C2217037B002C4576 /* LaunchScreen.storyboard */,
 				E729285F2217037B002C4576 /* Info.plist */,
 				2A2A3C10236FEC32008FF51D /* SECRET.swift */,
+				2A471CF4256A4BAF004A0AA1 /* CustomWeather.swift */,
 			);
 			path = CalendarClock;
 			sourceTree = "<group>";
@@ -249,6 +252,7 @@
 			files = (
 				E703AC652243364000E7FA4F /* EventSettingViewController.swift in Sources */,
 				E703AC612242215E00E7FA4F /* NSBezierPath+CGPath.swift in Sources */,
+				2A471CF5256A4BAF004A0AA1 /* CustomWeather.swift in Sources */,
 				E7272E32221A5234007ED8AD /* Event.swift in Sources */,
 				2A2A3C11236FEC32008FF51D /* SECRET.swift in Sources */,
 				E7E9DEC02249F35D00C0CA5A /* Insomnia.swift in Sources */,

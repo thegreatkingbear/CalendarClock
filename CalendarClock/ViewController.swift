@@ -37,9 +37,9 @@ class ViewController: UIViewController, StoryboardView, UIPopoverPresentationCon
         configureCell: // cell
         { dataSource, collectionView, indexPath, item in
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "WeatherCell", for: indexPath) as! WeatherCell
-            cell.temp!.text = "\(item.temp!)"
-            cell.icon!.image = item.icon
-            cell.time!.text = "\(item.hour!)"
+            cell.temp!.text = String(round(item.main.temp)).split(separator: ".")[0] + "°"
+            cell.icon!.image = UIImage(named: item.weather[0].icon)!.with(color: UIColor.lightGray)
+            cell.time!.text = "\(item.hour())"
             return cell
         },
         configureSupplementaryView: // section header
@@ -197,7 +197,7 @@ class ViewController: UIViewController, StoryboardView, UIPopoverPresentationCon
         reactor.state.asObservable().map { $0.weathers }
             .filterNil()
             .distinctUntilChanged { $0 == $1 }
-            .map { $0.description }
+            .map { $0.weather[0].description }
             .bind(to: self.currentDescription!.rx.text)
             .disposed(by: self.disposeBag)
 
@@ -205,7 +205,7 @@ class ViewController: UIViewController, StoryboardView, UIPopoverPresentationCon
         reactor.state.asObservable().map { $0.weathers }
             .filterNil()
             .distinctUntilChanged { $0 == $1 }
-            .map { $0.icon }
+            .map { UIImage(named: $0.weather[0].icon)!.with(color: UIColor.lightGray) }
             .bind(to: self.currentIcon!.rx.image)
             .disposed(by: self.disposeBag)
 
@@ -213,7 +213,7 @@ class ViewController: UIViewController, StoryboardView, UIPopoverPresentationCon
         reactor.state.asObservable().map { $0.weathers }
             .filterNil()
             .distinctUntilChanged { $0 == $1 }
-            .map { $0.temp }
+            .map { String(round($0.main.temp)).split(separator: ".")[0] + "°" }
             .bind(to: self.currentTemperature!.rx.text)
             .disposed(by: self.disposeBag)
         
